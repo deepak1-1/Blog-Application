@@ -39,29 +39,42 @@ signInBtn.addEventListener('click', async (e)=>{
 
     let userPass = 0, passwordPass = 0;
 
+
     if( username.trim().length === 0 ){
 
+        userNotify.innerText = 'Please fill username!';
+        userNotify.style.color = 'red';
+        setTimeout( ()=>{
+            userNotify.innerText = '';
+        },3000);
+    
     } else { userPass = 1; }
+
     if(password.trim().length === 0){
+
+        passwordNotify.innerText = 'Please fill password!';
+        passwordNotify.style.color = 'red';
+        setTimeout( ()=>{
+            passwordNotify.innerText = '';
+        },3000);
 
     } else { passwordPass = 1; }
 
-    if(userPass === 1 && passwordPass === 0){
-        let postData = { username, password},
-        postOptions = {
+
+    if(userPass === 1 && passwordPass === 1){
+
+        let postOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify( postData ),
-            onUploadProgress: (p) => {
-                console.log(p);
-            }
+            body: JSON.stringify( { username, password} )
         }
 
         await fetch('/login', postOptions)
                 .then(res => res.json())
                 .then( data => {
+                    
                     if ( !data.userfound){
                         userNotify.innerText = 'Invalid username or user don\'t exist';
                         userNotify.style.color = 'red';

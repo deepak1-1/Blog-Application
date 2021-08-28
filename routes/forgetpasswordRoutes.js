@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
     res.render('forgetPassword/forgetPasswordindex', {title: 'forget Password', stylesheet: 'css/forgetPassword.css'});
 });
 
-router.post('/fetch-username', forgetpasswordController.fetch_username);
+router.post('/check-user', forgetpasswordController.check_user);
 
 router.post( '/get-code', forgetpasswordController.send_code);
 

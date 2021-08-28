@@ -3,9 +3,10 @@ const passwordInput = document.getElementById('password'),
       cpasswordInput = document.getElementById('cpassword');
 
 const passwordNotify = document.getElementById('passwordNotification'),
-      cpasswordNotify = document.getElementById('cpasswordNotification');
+      cpasswordNotify = document.getElementById('cpasswordNotification'),
+      mainNotify = document.getElementById('mainNotification');
 
-const goBackBtn = document.getElementById('doBack'),
+const goBackBtn = document.getElementById('goBack'),
       resetBtn = document.getElementById('resetPassword');
     
 
@@ -54,7 +55,20 @@ resetBtn.addEventListener('click', (e) => {
             fetch('/forget-password/reset', postOptions)
                  .then(res => res.json())
                  .then(data => {
-                     console.log(data);
+                    if(data.ok){
+                       
+                        mainNotify.innerHTML = '<div class=\'alert alert-success\'>Password Changed</div>'
+                        setTimeout( ()=> {
+                            mainNotify.innerHTML = '';
+                            window.location.href = data.redirect;
+                        },3000);
+
+                    } else {
+                        mainNotify.innerHTML = '<div class=\'alert alert-danger\'>failed!!</div>'
+                        setTimeout( ()=> {
+                            mainNotify.innerHTML = '';
+                        },3000);
+                    }
                  })
                  .catch( err => {
                      console.log(err);

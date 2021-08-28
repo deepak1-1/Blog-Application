@@ -8,9 +8,8 @@ const usernameInput = document.getElementById('username'),
       emailInput = document.getElementById('email'),
       verificationInput = document.getElementById('verificationCode');
 
-const verificationDiv = document.getElementById('Verificationdiv'),
-      usernameDiv = document.getElementById('usernamediv');
-let userName, email, routeToRequest, verificationCode,usernameLists;
+const verificationDiv = document.getElementById('Verificationdiv');
+let userName, email, verificationCode,usernameLists;
 
 
 function  disableInput(input){
@@ -20,31 +19,16 @@ function  enableInput(input){
         input.removeAttribute( 'disabled', 'disabled');
     };
 
-function emptyInput(input){
-    if(input.value === '')
-        return true
-    return false
-}
-
 goBackBtn.addEventListener('click', (e)=>{
 
     if(goBackBtn.innerText === 'Go Back'){
         window.location.href = '/';
-    } else if(goBackBtn.innerText === 'Edit Email?'){
+    } else if(goBackBtn.innerText === 'Edit Details?'){
 
         goBackBtn.innerText = 'Go Back';
-        getCodeBtn.innerText = 'Fetch Usernames'
+        getCodeBtn.innerText = 'Get Code'
         enableInput(emailInput);
-        usernameDiv.style.display = 'none';
-        usernameInput.innerHTML = '';
-        usernameLists = [];
-    }
-    else if(goBackBtn.innerText === 'Edit Username?'){
-    
-        goBackBtn.innerText = 'Edit Email?';
-        getCodeBtn.innerText = 'Select Username'
-        verificationDiv.style.display = 'none';
-        enableInput( usernameInput );
+        enableInput(usernameInput);
     }
 })
 
@@ -52,92 +36,102 @@ goBackBtn.addEventListener('click', (e)=>{
 
 getCodeBtn.addEventListener( 'click', async (e)=>{
 
-    if( e.target.innerText === 'Fetch Usernames'){
+    if( e.target.innerText === 'Get Code'){
 
-        if( !emptyInput(emailInput) ){
+        goBackBtn.innerText = 'Edit Details?'
+        let emailPass = 0, usernamePass = 0;
+        email = emailInput.value;
+        username = usernameInput.value;
+        
+        if( email.trim().length === 0 ){
+            
+            emailNotify.innerText = 'fill details!';
+            emailNotify.style.color = 'red';
+            setTimeout( ()=> {
+                emailNotify.innerText = '';
+            },3000);
 
-            email = emailInput.value;
-            let emailpostOptions = {
+        } else { emailPass = 1 }; // email close
+
+        if( username.trim().length === 0 ){
+
+            usernameNotify.innerText = 'fill details!';
+            usernameNotify.style.color = 'red';
+            setTimeout( ()=> {
+                usernameNotify.innerText = '';
+            },3000);
+
+        } else { usernamePass = 1}
+
+        if( emailPass === 1, usernamePass === 1 ){
+
+            const userpostOptions = {   
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify( {email} )
+                body: JSON.stringify( { email, username } )
             }
 
-            await fetch('/forget-password/fetch-username', emailpostOptions)
-                    .then( res => res.json())
-                    .then( data => {
-
-                        if(data.userNamelist.length === 0){
-
-                            emailNotify.innerText = 'No account for provided email!';
-                            emailNotify.style.color = 'red';
-
-                            setTimeout( ()=> {
-                                emailNotify.innerText = '';
-                            }, 3000);
-                        } else{
-                            usernameLists = data.userNamelist
-                            let options = '';
-                            usernameLists.forEach(username => {
-                                options += `<option value='${username}'>${username}</option>`
-                            });
-
-                            usernameInput.innerHTML = options;
-                            usernameDiv.style.display = 'block';
-
-                            getCodeBtn.innerText = 'Select Username';
-                            goBackBtn.innerText = 'Edit Email?';
-                            disableInput( emailInput );
-                        }
-                    })
-                    .catch( err=> {
-                        console.log(err);
-                    })
-
-        } else {
-            emailNotify.innerText = 'fill Email!';
-            emailNotify.style.color = 'red';
-
-            setTimeout( ()=>{
-                emailNotify.innerText = '';
-            }, 3000)
-        }
-    } else if ( e.target.innerText === 'Select Username') {
-
-        username = usernameInput.value;
-        getCodeBtn.innerText = 'Submit Code';
-        goBackBtn.innerText = 'Edit Username?';
-        disableInput( usernameInput );
-        verificationDiv.style.display = 'block';
-
-        let codepostOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify( { email, username } )
-        }
-
-        await fetch( '/forget-password/get-code', codepostOptions)
+            await fetch('/forget-password/check-user', userpostOptions)
                     .then(res => res.json())
                     .then(data => {
-                        console.log(data);
-                        if(data.codeSend){
-                            verificationCodeNotify.innerText = 'A 6 digit code sended to above email. Fill it! '
-                            verificationCodeNotify.style.color = 'green';
-                            disableInput( getCodeBtn );
 
+                        if(!data.email){
+                            emailNotify.innerText = 'No account for this email!';
+                            emailNotify.style.color = 'red';
                             setTimeout( ()=> {
-                                verificationCodeNotify.innerText = '';
-                                enableInput( getCodeBtn );
-                            }, 8000);
+                                emailNotify.innerText = '';
+                            },3000);
+                        }
+                        if(!data.username){
+                            usernameNotify.innerText = 'Don\'t Exists';
+                            usernameNotify.style.color= 'red';
+                            setTimeout( ()=> {
+                                usernameNotify.innerText = '';
+                            },3000);
+                        }
+                        
+                        if(data.email && data.username){
+
+                            disableInput(emailInput);
+                            disableInput(usernameInput);
+                            disableInput(getCodeBtn);
+                            verificationDiv.style.display = 'block';
+
+                            let codepostOptions = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify( { data} )
+                            }
+                            fetch( 'forget-password/get-code', codepostOptions)
+                                  .then(res => res.json())
+                                  .then(data => {
+
+                                        if(data.codeSend){
+
+                                            verificationCodeNotify.innerText = 'Code sended to above email!';
+                                            verificationCodeNotify.style.color = 'green';
+                                            getCodeBtn.innerText = 'Submit Code';
+                                            setTimeout( ()=>{
+                                                verificationCodeNotify.innerText = '';
+                                                enableInput(getCodeBtn);
+                                            },4000);
+                                        }
+
+                                  })
+                                  .catch(err => {
+                                      console.log(err);
+                                  })
                         }
                     })
-                    .catch( err => {
+                    .catch(err => {
                         console.log(err);
                     })
+        }
+        
     } else if( e.target.innerText === 'Submit Code' ){
 
         verificationCode = verificationInput.value;
@@ -179,6 +173,5 @@ getCodeBtn.addEventListener( 'click', async (e)=>{
                 verificationCodeNotify.innerText = '';
             }, 3000);
         }
-        console.log('inside verification code')
     }
 });

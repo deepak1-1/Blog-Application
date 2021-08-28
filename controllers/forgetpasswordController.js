@@ -3,7 +3,7 @@ const mailer = require('nodemailer');
 const loginDataModel = require('../models/signModel.ejs');
 const bcrypt = require('bcrypt');
 
-let userNamelist = [], beforeVerificationCode, userData;
+let beforeVerificationCode, userData;
 
 function genrateCode(){
     var minm = 100000;
@@ -28,18 +28,23 @@ const mailOptions = {
 
 // **************************** main router functions*******************
 
-const fetch_username = (req, res) => {
+const check_user = (req, res) => {
 
     loginDataModel.find( {email : req.body.email}, (err, data)=>{
-        userNamelist = [];
-        if (err)
+        
+        if(err){
             console.log(err);
-        else {
+        } else{
 
-            data.forEach( eachdata => {
-                userNamelist.push( eachdata.username )
-            });
-            res.send({ userNamelist });
+            let resData = { email :false, username: false };
+            if(data.length !== 0){
+                resData.email = req.body.email;
+                data.forEach(element => {
+                    if( element.username === req.body.username)
+                        resData.username = req.body.username;
+                });
+            }
+            res.send( resData );
         }
     });
 };
@@ -48,9 +53,8 @@ const send_code = (req, res) => {
 
     beforeVerificationCode = genrateCode();
     mailOptions.text = `Your verification code is ${beforeVerificationCode}`;
-    mailOptions.to = req.body.email;
-
-
+    mailOptions.to = req.body.data.email;
+    
     transporter.sendMail( mailOptions, (err, info)=> {
         if(err){
             console.log(err);
@@ -74,24 +78,27 @@ const verify_code = (req, res)=>{
     }
 }
 
-const reset_password = (req, res) => {
-    
-    console.log(req.body);
-    loginDataModel.update(
+const reset_password = async (req, res) => {
+
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+    loginDataModel.updateOne(
         {'username': userData.username, 'email': userData.email}, //query
-        {$set: {'password': req.body.password}}, // update
+        {$set: {'password': hashPassword}}, // update
         {upsert: false},
         (err, data)=>{
             if(err){
                 console.log(err);
             } else {
                 console.log(data);
+                res.send( {ok: data.ok, redirect: '/'});
             }
         }
     )
 }
 module.exports = {
-    fetch_username,
+    check_user,
     send_code,
     verify_code,
     reset_password
