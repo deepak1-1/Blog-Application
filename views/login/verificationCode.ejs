@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("../partials/head.ejs")%>
+    <body>
+
+        <div class="container my-5 text-center" id="codeDiv">
+            <div id="mainNotification"></div>
+
+            <div class="container" id="heading">
+                <h4 class="display-5 text-light my-3">Verification Code</h4>
+            </div>
+            <form action="" id="verificationForm">
+                <input type="text" name="verificationCode" placeholder="Enter 6 digit code here" id="inputCode">
+                <div id="codeNotification"></div>
+                <button type="button" class="btn btn-outline-light col-12" id="getCode">Get Code</button>
+                <button type="button" class="btn btn-outline-light mx-auto" id="goBackBtn">Go back</button>
+                <button type="button" class="btn btn-outline-light mx-auto" id="submitBtn">Submit</button>
+            </form>
+        </div>
+
+        <script src="Js/verification.js"></script>
+    </body>
+</html>

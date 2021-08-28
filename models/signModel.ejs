@@ -1,0 +1,35 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt')
+
+const loginSchema = new Schema({
+
+    username: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    }
+}, {timestamps : true});
+
+// middleware
+loginSchema.pre('save', async function(next){
+    try{
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(this.password, salt);
+        this.password = hashPassword;
+        next( )
+    } catch(error){
+        next(error)
+    }
+})
+
+
+const loginModel = mongoose.model('LoginData', loginSchema);
+module.exports = loginModel;

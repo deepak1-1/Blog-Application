@@ -1,0 +1,129 @@
+
+
+.main {
+    background-image: linear-gradient(
+		45deg, rgba(
+        0, 0, 0, .5), rgba(
+          0, 0, 0, 0.5)),
+        url("../Photos/backgroundImagePost1.jfif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.form_box {
+    background: linear-gradient(45deg, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0.7));
+    height: 600px;
+    width: 500px;
+    margin: 45px 10% 0 60%;
+    padding-top: 5px;
+    /* margin-top: 50px; */
+    border-radius: 20px;
+    position: relative;
+}
+
+.button_box {
+    width: 240px;
+    margin: 50px auto;
+    position: relative;
+    box-shadow: 0 0 15px 8px whitesmoke;
+    border-radius: 30px;
+}
+
+.toggle_btn {
+    color: white;
+    cursor: pointer;
+    padding: 10px 30px;
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
+}
+
+.toggle_btn:focus {
+    border: 0;
+    outline: none;
+}
+.toggle_btn:active {
+    border: 0;
+    outline: none;
+}
+
+#btn {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 120px;
+    height: 100%;
+    background: linear-gradient(to right, #232526, #414345 );
+    border-radius: 30px;
+    transition: 0.5s;
+}
+
+.input_group {
+    margin: auto;
+    margin-top: 40px;
+    width: 320px;
+    transition: .5s;
+}
+
+.input_field {
+    color: white;
+    width: 100%;
+    padding: 10px 0;
+    margin: 8px 0;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 2px solid whitesmoke;
+    outline: none;
+    background: transparent;
+}
+
+::placeholder {
+    color: white;
+    opacity: .8;
+}
+
+.input_group p {
+    margin: 14px auto;
+}
+
+.forgetPassword {
+    margin: 20px auto;
+    margin-top: 30px !important;
+    color: white;
+}
+
+.forgetPassword:hover {
+    font-size: large;
+    color: white;
+    text-decoration: none;
+}
+
+.submit_btn {
+    color: white;
+    width: 65%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin: 50px auto;
+    background: linear-gradient(to right, #232526, #414345);
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+
+}
+
+#signUp{
+    display: none;
+}
+
+form i {
+    margin-left: -1630px !important;
+    cursor: pointer;
+    color:white;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <%- include("../partials/head.ejs") %>
+    <body>
+        <div class="main">
+            <div id="mainNotification"></div>
+            <div class="form_box">
+                <div class="button_box">
+                    <div id="btn"></div>
+                    <button type="button" class="toggle_btn" >Sign In</button>
+                    <button type="button" class="toggle_btn" >Sign Up</button>
+                </div>
+                <form id="signIn" class="input_group text-center">
+                    <input id="usernamesignIn" type="email" name="username" class="input_field" placeholder="Enter username" autocomplete="off">
+                    <div class="usernameNotificationSignIn"></div>
+                    <input id="pwdSignIn" type="password" name="password" class="input_field" placeholder="Enter Password"/>
+                    <!-- <i class="far fa-eye" id="togglePassword" ></i> -->
+                    <div class="passwordNotificationSignIn"></div>
+                    <p>
+                        <a class="forgetPassword my-4" href="/forget-password">Forget Password?</a>
+                    </p>
+                    <button type="button" class="submit_btn" id="signInBtn">Sign In</button>
+                </form>
+                <form action="/verification" id="signUp" class="input_group text-center">
+                    <input type="text" name="username" id="userName" class="input_field" placeholder="Enter user name" autocomplete="off">
+                    <div class="usernameNotification"></div>
+                    <input type="email" name="email" id="emailsignUp" class="input_field" placeholder="Enter Valid Email" autocomplete="off">
+                    <div class="emailNotificationSignUp"></div>
+                    <input type="password" name="password" id="pwdsignUp" class="input_field" placeholder="Enter Password">
+                    <div class="passwordNotificationSignUp"></div>
+                    <input type="password" name="repassword" id="CpwdsignUp"  class="input_field" placeholder="Confirm Password">
+                    <div class="confirmpasswordNotificationSignUp"></div>
+                    <button type="button" class="submit_btn" id="verificationCode">Get Verification code</button>
+                </form>
+            </div>
+        </div>
+        
+        <script src="Js/sign_in_up.js"></script>
+    </body>
+</html>
