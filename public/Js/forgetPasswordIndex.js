@@ -98,7 +98,7 @@ getCodeBtn.addEventListener( 'click', async (e)=>{
                             disableInput(usernameInput);
                             disableInput(getCodeBtn);
                             verificationDiv.style.display = 'block';
-
+                            verificationCodeNotify.innerText = 'Sending...';
                             let codepostOptions = {
                                 method: 'POST',
                                 headers: {

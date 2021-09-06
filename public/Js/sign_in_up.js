@@ -33,12 +33,14 @@ toggle_btn.forEach(element => {
 signInBtn.addEventListener('click', async (e)=>{
 
     let username = document.getElementById('usernamesignIn').value,
-        password = document.getElementById('pwdSignIn').value;
+        password = document.getElementById('pwdSignIn').value,
+        rememberADay = document.getElementById('remember').checked;
     let userNotify = document.querySelector('.usernameNotificationSignIn'),
         passwordNotify = document.querySelector('.passwordNotificationSignIn');
 
-    let userPass = 0, passwordPass = 0;
+    console.log(rememberADay);
 
+    let userPass = 0, passwordPass = 0;
 
     if( username.trim().length === 0 ){
 
@@ -68,7 +70,7 @@ signInBtn.addEventListener('click', async (e)=>{
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify( { username, password} )
+            body: JSON.stringify( { username, password, rememberADay} )
         }
 
         await fetch('/login', postOptions)
@@ -143,7 +145,19 @@ verificationBtn.addEventListener('click',async (e)=> {
             setTimeout( ()=>{
                 passNotify.innerText = '';
             }, 3000)
-        } else { passwordPass = 1; }
+        } else {
+
+            if(password.length >= 6){
+                passwordPass = 1;
+            } else {
+                passNotify.innerText = 'Atleast 6 length password!'
+                passNotify.style.color = 'red';
+
+                setTimeout( ()=> {
+                    passNotify.innerText = '';
+                }, 3000);
+            }
+        }
 
         if(confirmpassword.trim().length === 0){
             confpassNotify.innerText = 'password can\'t be empty or only spaces!';
@@ -156,7 +170,7 @@ verificationBtn.addEventListener('click',async (e)=> {
 
         if( userPass===1 && emailPass===1 && passwordPass===1 && cPasswordPass===1) {
 
-            const postDataUserCheck = { userName };
+            const postDataUserCheck = { userName, email };
             const postOptionsUserCheck = {
                 method: 'POST',
                 headers: {
@@ -165,11 +179,15 @@ verificationBtn.addEventListener('click',async (e)=> {
                 body: JSON.stringify( postDataUserCheck )
             }
 
+            emailNotify.innerText = 'Sending Code...';
+            emailNotify.style.color = 'white';
+
             await fetch('/check-user', postOptionsUserCheck)
                 .then(res => (res.json()))
                 .then(data => {
-                    if(data.message === 'YES'){
+                    if(data.found){
 
+                        emailNotify.innerText = '';
                         userNotify = document.querySelector('.usernameNotification');
                         userNotify.innerText = 'Already exists!';
                         userNotify.style.color = 'red';
@@ -177,8 +195,16 @@ verificationBtn.addEventListener('click',async (e)=> {
                         setTimeout(()=>{
                             userNotify.innerText = "";
                         }, 2000);
-                    
-                    } else if (data.message === 'NO'){
+
+                    } else if(data.limitExceed){
+
+                        emailNotify.innerText = "Already 5 account with this email!";
+                        emailNotify.style.color = 'red';
+                        setTimeout( ()=>{
+                            emailNotify.innerText = '';
+                        },2000)
+
+                    } else if (!data.found && !data.limitExceed){
 
                         if(password === confirmpassword){
                             
@@ -199,11 +225,11 @@ verificationBtn.addEventListener('click',async (e)=> {
                                 }
 
                             }
-
                             fetch( '/get-code', postOptionsVerification)
                                 .then( res => res.json())
                                 .then( data => {
                                     // console.log(data);
+                                    emailNotify.innerText = '';
                                     if(data.error){
 
                                         emailNotify.innerText = 'Email not valid!';
@@ -222,6 +248,7 @@ verificationBtn.addEventListener('click',async (e)=> {
                                 })
                         } else {
 
+                            emailNotify.innerText = '';
                             confpassNotify.innerText = 'password don\'t matches';
                             confpassNotify.style.color = 'red';
                             confpassNotify.style.margin = '0px';
@@ -232,9 +259,8 @@ verificationBtn.addEventListener('click',async (e)=> {
                     }
                 })
                 .catch(err => {
+                    emailNotify.innerText = '';
                     console.log(err);
                 });
-            
-            console.log(userName, email, password, confirmpassword);
         }    
 });

@@ -2,6 +2,8 @@
 const mailer = require('nodemailer');
 const loginDataModel = require('../models/signModel.ejs');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 
 let beforeVerificationCode, userData;
 
@@ -10,6 +12,14 @@ function genrateCode(){
     var maxm = 999999;
     return (Math.floor(Math.random() * (maxm - minm + 1)) + minm);
 }
+
+function createtoken( username, key, timeInMin ){
+
+    return jwt.sign( {username}, key, {
+        expiresIn: 60*timeInMin
+    })
+}
+
 
 const transporter = mailer.createTransport({
     service: 'gmail',
@@ -27,6 +37,15 @@ const mailOptions = {
 }
 
 // **************************** main router functions*******************
+
+
+const forget_password_page = (req, res) =>{
+
+    const token = createtoken( 'Page', 'ForgetPassword', 5 )//in mins
+    res.cookie('jwt', '', {maxAge: 1});
+    res.cookie('jwtForgetPassword', token,  { httpOnly: true, maxAge: 5*60*1000} ); 
+    res.render('forgetPassword/forgetPasswordindex', {title: 'forget Password', stylesheet: 'css/forgetPassword.css'});
+}
 
 const check_user = (req, res) => {
 
@@ -69,7 +88,11 @@ const verify_code = (req, res)=>{
 
     if(req.body.verificationCode === beforeVerificationCode){
 
-        userData = req.body;// { email, username, verificationCode}        
+        userData = req.body;// { email, username, verificationCode}
+
+        res.cookie('jwtForgetPassword', '',  { maxAge: 1} ); 
+        const token = createtoken( req.body.userName, 'ResetPassword', 5 )//in mins
+        res.cookie('jwtResetPassword', token,  { httpOnly: true, maxAge: 5*60*1000} ); 
         res.send( { redirect: '/forget-password/reset'} )
     
     } else {
@@ -91,13 +114,14 @@ const reset_password = async (req, res) => {
             if(err){
                 console.log(err);
             } else {
-                console.log(data);
+                res.cookie('jwtResetPassword', '', {maxAge: 1});
                 res.send( {ok: data.ok, redirect: '/'});
             }
         }
     )
 }
 module.exports = {
+    forget_password_page,
     check_user,
     send_code,
     verify_code,

@@ -1,0 +1,21 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const notificationSchema = new Schema({
+
+    username: {
+        type: String,
+        required: [true, 'Please send username!']
+    },
+    data: {
+        type: String,
+        required: [true, 'Please send data']
+    },
+    read: {
+        type: Boolean,
+        required: [true, 'Please send status']
+    }
+}, {timestamps : true});
+
+const notificationDataModel = mongoose.model('NotificationData', notificationSchema);
+module.exports = notificationDataModel;

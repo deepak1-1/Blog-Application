@@ -6,8 +6,10 @@ const bodyParser = require('body-parser');
 const basicRoutes = require('./routes/basicRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const signRoutes = require('./routes/sign_in_upRoutes');
+const registerRoutes = require('./routes/registerRoutes');
 const forgetpasswordRoutes = require('./routes/forgetpasswordRoutes');
-
+const cookieParser = require('cookie-parser');
+const Auth = require('./middleware/authMiddleware');
 
 
 
@@ -39,6 +41,9 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cookieParser());
+
+
 
 
 // basic routes
@@ -50,12 +55,13 @@ app.use('/', signRoutes);
 // forget password routes
 app.use('/forget-password', forgetpasswordRoutes);
 
+// register routes
+app.use('/register', registerRoutes)
+
 // blog routes
-app.use('/blog', blogRoutes);
-
-
+app.use('/blog', Auth.checkLoginAccess ,blogRoutes);
 
 // default route
 app.use((req, res)=>{
-    res.status(404).render('basic/404', { title: '404' , stylesheet: "css/styles.css"});
+    res.status(404).render('basic/404', { title: '404' , stylesheet: "css/index.css"});
 });

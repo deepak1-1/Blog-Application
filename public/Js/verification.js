@@ -41,7 +41,7 @@ document.getElementById('goBackBtn').addEventListener(
 
 
 document.getElementById('submitBtn').addEventListener(
-    'click', (e) => {
+    'click', async (e) => {
 
         let verificationCode = document.getElementById('inputCode').value;
 
@@ -56,38 +56,56 @@ document.getElementById('submitBtn').addEventListener(
             body : JSON.stringify( postData )
         };
 
-        fetch( '/verification', postOptions)
+        mainNotification.innerHTML = `<div class="alert alert-info">Registering...</div>`;
+        await fetch( '/verification', postOptions)
             .then(res => res.json())
             .then(data => {
                 if(data.error){
-                    
-                    CodeNotification.innerText = data.error;
-                    CodeNotification.style.color = "red";
-                    CodeNotification.style.margin = '0px'
+                    if(data.redirect){
+                        mainNotification.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+                            console.log('Inside redirect');
+                            setTimeout( ()=>{
+                                window.location.href = data.redirect;
+                            }, 2000);
+                        } else {
+                            mainNotification.innerHTML = '';
+                            CodeNotification.innerText = data.error;
+                            CodeNotification.style.color = "red";
+                            CodeNotification.style.margin = '0px'
 
-                    if (getCodeBtnShown === 0){
-                        
-                        getCodeBtn.style.display = 'block';
-                        getCodeBtnShown = 1;
-                    }
+                            if (getCodeBtnShown === 0){
+                                
+                                getCodeBtn.style.display = 'block';
+                                getCodeBtnShown = 1;
+                            }
 
-                    setTimeout( ()=>{
-                        CodeNotification.innerText = '';
-                    }, 3000);
+                            setTimeout( ()=>{
+                                CodeNotification.innerText = '';
+                            }, 3000);
+                        }
                 } else {
-                    
-                    mainNotification.innerHTML = `<div class="alert alert-success">Registered Successfully!</div>`
-                    getCodeBtn.setAttribute('disabled', 'disabled');
-                    document.getElementById('submitBtn').setAttribute('disabled', 'disabled');
 
-                    setTimeout( ()=>{
-                        mainNotification.innerHTML = '';
-                        window.location.href = data.redirect;
-                    },3000);
-                    // console.log('Everything is good');
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    });
+                    fetch(data.redirect)
+                        .then( res => res.json() )
+                        .then(data => {
+                            getCodeBtn.setAttribute('disabled', 'disabled');
+                            document.getElementById('submitBtn').setAttribute('disabled', 'disabled');
+                            if(data.error){
+                                mainNotification.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+                            } else {
+                                mainNotification.innerHTML = `<div class="alert alert-success">Registered Successfully!</div>`;
+                            }
+                            setTimeout ( ()=> {
+                                mainNotification.innerHTML = '';
+                                window.location.href = data.redirect;
+                            },3000);
+                        })
+                        .catch( err => {
+                            console.log(err);
+                        })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});

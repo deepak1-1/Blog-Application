@@ -1,0 +1,34 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const userDataSchema = new Schema({
+
+    username: {
+        type: String,
+        required: [true, 'Please fill username!'],
+        unique: true
+    },
+    name: {
+        type: String,
+        required: [true, 'Please fill Name']
+    },
+    gender: {
+        type: String,
+        required: [true, 'Please fill gender']
+    },
+    followers: {
+        type: Array
+    },
+    following: {
+        type: Array
+    },
+    posts : {
+        type: Array
+    },
+    tagsInterested: {
+        type: Array
+    }
+}, {timestamps : true});
+
+const userDataModel = mongoose.model('UserData', userDataSchema);
+module.exports = userDataModel;

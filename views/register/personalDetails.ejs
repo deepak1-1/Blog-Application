@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("../partials/head.ejs")%>
+    <body>
+
+        <div class="container border border-warning text-center p-4 mt-5">
+        	<h1 class="display-4">Fill Some details!</h1>
+            <div id="mainNotification"></div>
+
+            <form class="mt-4 px-auto col-8 offset-2 border border-success rounded p-2">
+                <div class="form-row my-1">
+                    <div class="col-2 offset-2">
+                        <label for="username" class="font-weight-bold align-middle my-auto">Username:</label>
+                    </div>
+                    <div class="col-6 offset-1">
+                      <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username" value=<%= data.username%> disabled="disabled">
+                    </div>
+                </div>
+                <div class="form-row my-1">
+                    <div class="col-2 offset-2">
+                        <label for="email" class="font-weight-bold align-middle my-auto">Email:</label>
+                    </div>
+                    <div class="col-6 offset-1">
+                      <input type="text" class="form-control" id="email" placeholder="Enter Email" name="email" value=<%= data.email %> disabled="disabled">
+                    </div>
+                </div>
+                <div class="form-row my-1">
+                    <div class="col-2 offset-2">
+                        <label for="name" class="font-weight-bold align-middle my-auto">Name:</label>
+                    </div>
+                    <div class="col-6 offset-1">
+                      <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="form-row my-1">
+                    <div class="col-2 offset-2">
+                        <label for="gender" id="gender" class="font-weight-bold align-middle my-auto">Gender:</label>
+                    </div>
+                    <div class="col-6 offset-1 row">
+                        <div class="col offset">
+                            <input type="radio" name="gender" value="male"> Male
+                        </div>
+                        <div class="col offset">
+                            <input type="radio" name="gender" value="female"> Female
+                        </div>
+                        <div class="col offset">
+                            <input type="radio" name="gender" value="others"> Others
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row my-1">
+                    <div class="col-8 offset-2 border border-secondary">
+                        <label class="font-weight-bold align-middle my-auto">Interseted In..?</label>
+                        <div class="form-row mt-3 text-left px-4">
+                            <div class="col-4">
+                                <input type="checkbox" id="agricultureTag" name="agriculterTag" value="Agriculture">
+                                <label for="agricultureTag"> Agriculture</label><br>
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="sportsTag" name="sportsTag" value="Sports">
+                                <label for="sportsTag"> Sports</label><br>  
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="technologyTag" name="technologyTag" value="Technology">
+                                <label for="technologyTag"> Technology</label><br>  
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="artTag" name="artTag" value="Art">
+                                <label for="artTag"> Art</label><br>  
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="homeScienceTag" name="homeScienceTag" value="Home Science">
+                                <label for="homeScienceTag"> Home Science</label><br>  
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="politicsTag" name="politicsTag" value="Politics">
+                                <label for="politicsTag"> Politics</label><br>  
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="photographyTag" name="photographyTag" value="Photography">
+                                <label for="photographyTag"> Photography</label><br>  
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="othersTag" name="othersTag" value="Others">
+                                <label for="othersTag"> Others</label><br>  
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+            </form>
+
+       	 	<div class="row p-3">
+				<button type="button" class="col-3 offset-2 btn btn-outline-secondary rounded" id="gobackbtn"><i class="fas fa-arrow-left mr-2"></i>Go Back</button>
+       	 		<button type="button" class="col-3 offset-2 btn btn-outline-primary rounded" id="nextbtn">Next<i class="fas fa-arrow-right ml-2"></i></button>
+       	 	</div>
+        </div>
+
+        <script src="/js/personalDetail.js"></script>
+    </body>
+</html>
