@@ -1,9 +1,24 @@
 
-const mailer = require('nodemailer');
 const loginDataModel = require('../models/signModel.ejs');
 const InsertUserDataModel = require('../models/userDataModel.ejs');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+
+// ************************ main routes functions ***************
+
+const userForm = async (req, res)=>{
+
+	loginDataModel.find( {username: req.data}, (err, data)=>{
+
+	res.render('register/personalDetails', {title: 'Personal Details', 
+							stylesheet: false,
+							data: {
+								email: data[0].email,
+								username: data[0].username
+							}
+				});
+	})
+}
 
 const InsertUser = async (req, res)=>{
 
@@ -17,7 +32,7 @@ const InsertUser = async (req, res)=>{
 	})
 	dataInsert.save()
 		.then(result =>{
-			res.send( {successfull: true, redirect:''} )
+			res.send( {successfull: true, redirect:'/register/profile-photo'} )
 		})
 		.catch( err=>{
 			console.log(err);
@@ -26,9 +41,26 @@ const InsertUser = async (req, res)=>{
 }
 
 
+const userImageInput = (req, res)=>{
+
+	res.render('register/userImage', {title: 'Profile Photo', stylesheet: false})
+}
+
+const saveUserImage = (req, res)=>{
+
+	loginDataModel.find( {username: req.data}, (err, data)=>{
+		console.log(data);
+	})
+	console.log(req.body);
+	console.log(req.file);
+}
+
 
 
 module.exports = {
-	InsertUser
+	userForm,
+	InsertUser,
+	userImageInput,
+	saveUserImage
 }
 

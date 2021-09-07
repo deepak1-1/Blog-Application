@@ -63,5 +63,5 @@ app.use('/blog', Auth.checkLoginAccess ,blogRoutes);
 
 // default route
 app.use((req, res)=>{
-    res.status(404).render('basic/404', { title: '404' , stylesheet: "css/index.css"});
+    res.status(404).render('basic/404', { title: '404' , stylesheet: "/css/index.css"});
 });

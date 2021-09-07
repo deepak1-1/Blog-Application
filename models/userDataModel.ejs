@@ -8,6 +8,12 @@ const userDataSchema = new Schema({
         required: [true, 'Please fill username!'],
         unique: true
     },
+    profilePicName: {
+        type: String
+    },
+    profilePath: {
+        type: String
+    },
     name: {
         type: String,
         required: [true, 'Please fill Name']

@@ -1,27 +1,40 @@
 
 const express = require('express');
 const router = express.Router();
-const sign_in_upController = require('../controllers/registerController');
+const registerController = require('../controllers/registerController');
 const auth = require('../middleware/authMiddleware');
+const multer = require('multer');
+const fs = require('fs');
+
+// some userfull functions
+
+const storage = multer.diskStorage({
+	destination: function(req, file, cb){
+		fs.mkdir('./Data/User Image/deepak', (err)=>{
+			if(!err){
+				cb(null, './Data/User Image/deepak/');		
+			}
+		})
+	},
+	filename: function(req, file, cb){
+		cb(null, file.originalname)
+	}
+})
+
+const upload = multer({
+	storage: storage
+})
 
 
 
-router.get( '/',  (req, res)=>{
-	res.render('register/personalDetails', {title: 'Personal Details', 
-							stylesheet: false,
-							data: {
-								email: 'deepaktewatia049@gmail.com',
-								username: 'deesdpak'
-							}
-				});
-} );
+// main routes
 
+router.get( '/', auth.checkRegisterAccess, registerController.userForm );
 
-router.post('/', sign_in_upController.InsertUser);
-// router.get('/', auth.checkRegisterAccess, (req, res)=>{
-// 	console.log(req.data);
-// 	res.render('register/personalDetails', {title: 'Personal Details', stylesheet: false});
-// })
+router.post('/', auth.checkRegisterAccess, registerController.InsertUser);
 
+router.get('/profile-photo', auth.checkRegisterAccess, registerController.userImageInput);
+
+router.post('/profile-photo', auth.checkRegisterAccess, upload.single('profile'), registerController.saveUserImage);
 
 module.exports = router;

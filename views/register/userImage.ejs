@@ -1,0 +1,15 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("../partials/userImageHead.ejs")%>
+    <body>
+        <div class="container mt-5 mb-4 border border-secondary text-center p-4 rounded">
+            <h1 class="display-3">Upload Profile Photo!</h1>
+            <form class="form-row mt-5" id="profileForm" action="http://localhost:4000/register/profile-photo" method="POST" enctype="multipart/form-data">
+                
+                <input class="form-control col-6 offset-3 p-0 my-3" name='profile' type='file' accept="Image/*">
+                <button type="submit" class="btn btn-primary col-2 offset-5">Upload Image</button>
+            </form>
+        </div>
+    </body>
+</html>

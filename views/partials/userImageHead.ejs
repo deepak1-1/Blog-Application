@@ -1,0 +1,35 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+    <%if(stylesheet) {%>
+        <link rel="stylesheet" href="<%= stylesheet %>">
+    <% }%>
+    <style>
+            input[type=file]::file-selector-button {
+                border: 1px solid black;
+                padding: .3em .4em;
+                marign: 0;
+                margin-right: 10px;
+                border-radius: .2em;
+                background-color: #4169e1;
+                color: white;
+                transition: 1s;
+            }
+
+            input[type=file]::file-selector-button:hover {
+                background-color: #81ecec;
+                border: 1px solid #00cec9;
+                cursor: pointer;
+            }
+            input::placeholder {
+                text-align: center !important;
+            }
+    </style>
+</head>
