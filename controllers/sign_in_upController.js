@@ -1,6 +1,7 @@
 
 const mailer = require('nodemailer');
 const loginDataModel = require('../models/signModel.ejs');
+const userDataModel = require('../models/userDataModel.ejs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -16,6 +17,13 @@ function genrateCode(){
 function createtoken( username, key, timeInMin ){
 
     return jwt.sign( {username}, key, {
+        expiresIn: 60*timeInMin
+    })
+}
+
+function createLoginToken( data, key, timeInMin ){
+
+    return jwt.sign( {data}, key, {
         expiresIn: 60*timeInMin
     })
 }
@@ -134,8 +142,6 @@ const register_user = (req, res) => {
             res.send( {redirect: '/register', error:false} );
         })
         .catch(err=>{
-            console.log('I am inside tadaaaa....');
-
             console.log(err.message);
         })
     } catch(error){
@@ -148,36 +154,45 @@ const register_user = (req, res) => {
 
 const user_login = (req, res) => {
 
-    loginDataModel.find( { 'username': req.body.username }, (error, user)=>{
+    loginDataModel.findOne( { 'username': req.body.username }, (error, data)=>{
         if( error){
             console.log(error);
         } else {
-            if (user.length === 0){
+            if (!data){
                 res.send({ userfound: false, match: false });
             } else {
-                bcrypt.compare(req.body.password, user[0].password, (err, isMatch)=>{
+                bcrypt.compare(req.body.password, data.password, (err, isMatch)=>{
                     if (err){
                         console.log(err);
                     } else if (!isMatch) {
                         res.send({ userfound: true, match: false });
                     } else {
 
-                        //work with registeration
-                        // const token = createtoken( username, 'ValidRegisteration', 60 )//in mins
-                        // res.cookie('jwtAccessVerification', '', {maxAge: 1});
-                        // res.cookie('jwtRegister', token,  { httpOnly: true, maxAge: 60*60*1000} ); 
-                        // res.send( {redirect: '/register', error:false} );
+                        userDataModel.findOne( {username: req.body.username}, (err, data)=>{
+                            if(err){
+                                console.log("Error inside User Login: "+err)
+                            } else {
+                                if(data){
+                                    res.cookie('jwt', '', {maxAge:1});
+                                    if(req.body.rememberADay){
+                                        const token = createLoginToken( {username:req.body.username, name:data.name}, 'LoginAcess', 24*60 )//in mins
+                                        res.cookie('jwtLoginAccess', token,  { httpOnly: true, maxAge: 24*60*60*1000} ); 
 
-                        res.cookie('jwt', '', {maxAge:1});
-                        if(req.body.rememberADay){
-                            const token = createtoken( req.body.username, 'UserAccess', 24*60 )//in mins
-                            res.cookie('jwtLoginAccess', token,  { httpOnly: true, maxAge: 24*60*60*1000} ); 
+                                    }else {
+                                        const token = createLoginToken( {username:req.body.username, name:data.name}, 'LoginAcess', 24*60)//in mins
+                                        res.cookie('jwtLoginAccess', token);
+                                    }
+                                    res.send({ userfound: true, match: true , redirect: '/home-page'})
 
-                        }else {
-                            const token = createtoken( req.body.username, 'UserAccess', 24*60)//in mins
-                            res.cookie('jwtLoginAccess', token);
-                        }
-                        res.send({ userfound: true, match: true , redirect: ''})
+                                } else {
+                                    //work with registeration
+                                    const token = createtoken( req.body.username, 'ValidRegisteration', 60 )//in mins
+                                    res.cookie('jwtRegister', token,  { httpOnly: true, maxAge: 60*60*1000} );
+                                    res.send({ userfound: true, match: true ,redirect: '/register'})
+                                }
+                            }
+                        })
+                        
                     }
                 })
             }

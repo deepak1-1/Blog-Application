@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("../partials/head.ejs")%>
+    <body>
+
+        <%- include('../partials/indexNav.ejs') %>
+
+        <div class="container-fluid my-2 firstdiv text-center">
+            <div class="row">
+                <div class="col-2 offset-1">
+                    <img class="profileImage" src="<%= sendData.profilePath%>">
+                </div>
+                <div class="col-8 row">
+                    <h2 class="display-4 font-weight-bolder col-4" id="followers">Followers <br><%= sendData.followers%></h2>
+                    <h2 class="display-4 font-weight-bolder col-4" id="following">Following <br><%= sendData.following%></h2>
+                    <h2 class="display-4 font-weight-bolder col-2" id="posts">Posts <br><%= sendData.totalposts%></h2>
+                </div>
+                <div class="col-8 offset-2 border border-secondary mt-4"></div>
+                <div class="col-6 offset-3 border border-secondary mt-4">
+                    <div class="row border border-secondary">
+                        <h3 class="col-4 offset-2 font-weight-bolder display-5">Name:</h3> <p class="col-6 display-5 text-info"><%= sendData.name%></p>
+                    </div>
+                    <div class="row border border-secondary">
+                        <h3 class="col-4 offset-2 font-weight-bolder display-5">Gender:</h3> <p class="col-6 display-5 text-info"><%= sendData.gender%></p>
+                    </div>
+                    <div class="row border border-secondary">
+                        <h3 class="col-6 offset-1 font-weight-bolder display-5">Account Created on:</h3> <p class="col-4 display-5 text-info"><%= sendData.accountCreated%></p>
+                    </div>
+                    <div class="row border border-secondary">
+                        <div class="col-6 offset-3">
+                            <h3 class="font-weight-bolder text-primary">
+                                Intrested Tags...
+                            </h3>
+                        <div>
+                        <div class="my-4 row">
+                            <% sendData.interestedTag.forEach(element => { %>
+                            <span class="pills m-1"><%= element %></span>
+                            <% } )%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../partials/footer.ejs') %>
+
+
+        <script src="/Js/contactUs.js"></script>
+    </body>
+</html>

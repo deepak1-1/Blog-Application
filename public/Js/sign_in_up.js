@@ -38,8 +38,6 @@ signInBtn.addEventListener('click', async (e)=>{
     let userNotify = document.querySelector('.usernameNotificationSignIn'),
         passwordNotify = document.querySelector('.passwordNotificationSignIn');
 
-    console.log(rememberADay);
-
     let userPass = 0, passwordPass = 0;
 
     if( username.trim().length === 0 ){
@@ -93,7 +91,8 @@ signInBtn.addEventListener('click', async (e)=>{
                                 passwordNotify.innerText = '';
                             }, 3000)
                         } else {
-                            console.log('everything is fine!');
+                            
+                            window.location.href = data.redirect;
                         }
                     }
                 })

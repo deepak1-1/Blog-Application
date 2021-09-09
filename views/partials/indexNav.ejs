@@ -2,13 +2,58 @@
 
 <ul class="clearfix fixed-top" id="my_nav">
     <div class="float-left">
-        <li class="nav_items active"><a  href="/">Blogger</a></li>
-        <li class="nav_items"><a href="/blog">Create blog</a></li>
-        <li class="nav_items"><a href="#">Personal blogs</a></li>
-        <li class="nav_items"><a href="/about">About</a></li>
+        <% if(sendData.profile){%>
+            <li class="nav_items"><a href="/home-page/profile" class="active navImage">
+                <img src="<%= sendData.profilePath%>">
+                <%= sendData.name %>
+            </a></li>
+        <% } else { %>
+            <li class="nav_items"><a href="/home-page/profile" class="navImage">
+                <img src="<%= sendData.profilePath%>">
+                <%= sendData.name %>
+            </a></li>
+        <% } %>
+        
+        <% if(sendData.homepage){ %>
+            <li class="nav_items"><a class="active" href="/home-page">Home Page</a></li>
+        <% } else { %>
+            <li class="nav_items"><a href="/home-page">Home Page</a></li>
+        <% } %>
+
+        <% if(sendData.createBlog){ %>
+            <li class="nav_items"><a class="active" href="/home-page/create-blog">Create blog</a></li>
+        <% } else { %>
+            <li class="nav_items"><a href="/home-page/create-blog">Create blog</a></li>
+        <% } %>
+
+        <% if(sendData.privatePost){ %>
+            <li class="nav_items"><a class="active" href="/home-page/private-post">Private Post</a></li>
+        <% } else { %>
+            <li class="nav_items"><a href="/home-page/private-post">Private Post</a></li>
+        <% } %>
+
+        <% if(sendData.request){ %>
+            <li class="nav_items"><a class="active" href="/home-page/request">Request</a></li>
+        <% } else { %>
+            <li class="nav_items"><a href="/home-page/request">Request</a></li>
+        <% } %>
+
+        <% if(sendData.notification){ %>
+            <li class="nav_items"><a class="active" href="/home-page/notification">Notification</a></li>
+        <% } else { %>
+            <li class="nav_items"><a href="/home-page/notification">Notification</a></li>
+        <% } %>
+
+        <% if(sendData.about){ %>
+            <li class="nav_items"><a class="active" href="/about">About</a></li>
+        <% } else { %>
+            <li class="nav_items"><a href="/about">About</a></li>
+        <% } %>
+
     </div>
 
-    <li class="float-right">
+    <li class="float-right my-auto pr-4">
+        <button class="btn btn-outline-light text-light mt-2 nav_btn" id="contact_us">Log out</button>
         <button class="btn btn-outline-light text-light mt-2 nav_btn" id="contact_us">Contact us</button>
     </li>
 </ul>

@@ -96,15 +96,29 @@ const checkLoginAccess = (req, res, next) =>{
 	const token = req.cookies.jwtLoginAccess;
 	if(token){
 
-		jwt.verify(token, 'UserAccess', (err, decodedToken)=>{
+		jwt.verify(token, 'LoginAcess', (err, decodedToken)=>{
 			if(err){
-				res.redirect('/');
+				if(req.url !== '/'){
+					res.redirect('/');
+				} else {
+					next()
+				}
 			} else {
-				next();
+				if(req.url === '/'){
+					req.data = {username: decodedToken.data.username}
+					res.redirect('/home-page')
+				} else{
+					req.data = {username: decodedToken.data.username, name: decodedToken.data.name, login: true};
+					next();		
+				}
 			}
 		})
 	} else {
-		res.redirect('/');
+		if(req.url !== '/'){
+			res.redirect('/');
+		} else {
+			next()
+		}
 	}
 
 }
@@ -119,7 +133,6 @@ const checkRegisterAccess = (req, res, next) =>{
 			if(err){
 				res.redirect('/');
 			} else {
-				// console.log(req.body, decodedToken.username)
 				req.data = decodedToken.username ;
 				next();
 			}
@@ -130,6 +143,23 @@ const checkRegisterAccess = (req, res, next) =>{
 
 }
 
+const checkProfileUpload = (req, res, next) =>{
+
+	const token = req.cookies.jwtProfilePhoto;
+	if(token){
+
+		jwt.verify(token, 'ValidUpload', (err, decodedToken)=>{
+			if(err){
+				res.redirect('/');
+			} else {
+				req.data = {username: decodedToken.data.username, name: decodedToken.data.name} ;
+				next();
+			}
+		})
+	} else {
+		res.redirect('/');
+	}
+}
 module.exports = {
 	checkForSignInUpForgetPassword,
 	checkSignUptoken,
@@ -137,5 +167,6 @@ module.exports = {
 	checkForForgetPassword,
 	validForPasswordReset,
 	checkLoginAccess,
-	checkRegisterAccess
+	checkRegisterAccess,
+	checkProfileUpload
 }
