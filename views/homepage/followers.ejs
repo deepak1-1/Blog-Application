@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("../partials/head.ejs")%>
+    <body>
+
+        <%- include('../partials/indexNav.ejs') %>
+
+        <div class="container mt-5 text-center firstdiv">
+            <div class="row">
+                <div class="col-2">
+                    <button id="goBack" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Go Back</button>
+                </div>
+                <h1 class="display-4 col-8 offset-right-2 border border-secondary">Followers</h1>
+            </div>
+
+            <div class="col-6 offset-3">
+                <% if(!sendData.followers){ %>
+                    <h2 class="display-4 text-danger">No followers</h2>
+                <% } else { %>
+                    <% sendData.followers.forEach( eachFollower => {%>
+                        <div class="row border border-secondary rounded p-1">
+                            <div class="col-1">
+                                <img src="<%= eachFollower.profilePath%>" class="follow_profile_image">
+                            </div>
+                            <div class="col-4 text-left">
+                                <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0">
+                                    <%= eachFollower.username %>
+                                </p></div>
+                                <div class="col-12"><p class="text-secondary my-0 py-0">
+                                    <%= eachFollower.name %>
+                                </p></div>
+                            </div>
+                            <div class="col-3 offset-4">
+                                <button class="mt-2 btn btn-outline-danger removeBtn">Remove</button>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+
+        </div>
+
+        <%- include('../partials/footer.ejs') %>
+
+
+        <script src="/Js/followers.js"></script>
+    </body>
+</html>

@@ -34,7 +34,7 @@
     margin-top: 80px !important;
 }
 
-ul {
+ul#my_nav {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -43,11 +43,11 @@ ul {
   /*height: 60px;*/
 }
 
-li {
+.nav_items {
   float: left;
 }
 
-li a {
+.nav_items a {
   display: block;
   color: white;
   text-align: center;
@@ -62,7 +62,7 @@ li a {
     padding: 9px 16px !important;
 }
 
-li a:hover:not(.active) {
+.nav_items a:hover:not(.active) {
     color: white;
     text-decoration: none;
 }
@@ -103,7 +103,7 @@ li a:hover:not(.active) {
 }
 
 .pills {
-    background: linear-gradient(to right, #870000, #190a05);
+    background: linear-gradient(to right, #333333, #dd1818);
     padding: 10px;
     color: white;
     border-radius: 30px;
@@ -126,4 +126,12 @@ input[type=file]::file-selector-button:hover {
     background-color: #81ecec;
     border: 1px solid #00cec9;
     cursor: pointer;
+}
+
+.follow_profile_image {
+    height:50px; 
+    width:50px; 
+    border-radius: 100%; 
+    margin: 0px !Important; 
+    padding:0px !Important;
 }

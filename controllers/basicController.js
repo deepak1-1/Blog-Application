@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const loginDataModel = require('../models/signModel.ejs');
 const userDataModel = require('../models/userDataModel.ejs');
+const requestModel = require('../models/requestModel.ejs');
 
 function createtoken( username, key, timeInMin ){
 
@@ -50,9 +51,56 @@ const get_home_page = (req, res) => {
         }
     })
 }
+
+const log_out = (req, res)=> {
+
+    res.cookie('jwtLoginAccess', '',  { maxAge: 1 });
+    res.send( { logOut: true , redirect: '/'} )
+}
+
+const follow = (req, res)=>{
+
+    const sendRequest = requestModel({
+        sender: req.data.username,
+        receiver: req.body.receiverUsername,
+        accepted: false
+    })
+
+    sendRequest.save()
+        .then(result =>{
+            res.send( {send: true} )
+        })
+        .catch(err =>{
+            res.send( {send: false} )
+            console.log('Error inside basicController follow'+err);
+        })
+}
+
+const unfollow = (req, res)=>{
+
+    sendRequest()
+}
+
+const cancel_request = (req, res)=>{
+
+    requestModel.deleteMany( { sender: req.data.username, receiver: req.body.receiverUsername}, (err, data)=>{
+        if(err){
+            console.log('Error inside basicController cancel_request');
+            res.send( {cancel: false} )
+        } else {
+            
+            res.send( {cancel: true} )
+        }
+    })
+}
+
 module.exports = {
     get_login_page,
     get_about,
-    get_home_page
+    get_home_page,
+    log_out,
+    follow,
+    unfollow,
+    cancel_request
 
 };

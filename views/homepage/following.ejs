@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("../partials/head.ejs")%>
+    <body>
+
+        <%- include('../partials/indexNav.ejs') %>
+
+        <div class="container mt-5 text-center firstdiv">
+            <div class="row">
+                <div class="col-2">
+                    <button id="goBack" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Go Back</button>
+                </div>
+                <h1 class="display-4 col-8 offset-right-2 border border-secondary">Following</h1>
+            </div>
+            <div class="col-6 offset-3" id="mainNotification"></div>
+
+            <div class="col-6 offset-3">
+                <% if(!sendData.following){ %>
+                    <h2 class="display-5 text-danger">No following</h2>
+                <% } else { %>
+                    <% sendData.following.forEach( eachFollowing => {%>
+                        <div class="row border border-secondary rounded p-1">
+                            <div class="col-1">
+                                <img src="<%= eachFollowing.profilePath%>" class="follow_profile_image">
+                            </div>
+                            <div class="col-4 text-left">
+                                <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0">
+                                    <%= eachFollowing.username %>
+                                </p></div>
+                                <div class="col-12"><p class="text-secondary my-0 py-0">
+                                    <%= eachFollowing.name %>
+                                </p></div>
+                            </div>
+                            <div class="col-3 offset-4">
+                                <button class="mt-2 btn btn-primary unfollowBtn">Unfollow</button>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+
+            <h1 class="display-4 col-8 offset-2 border border-secondary">Suggestions</h1>
+            <div class="col-6 offset-3 mt-3">                
+                <% if(!sendData.suggestion){ %>
+                    <h2 class="display-5 text-danger">No suggestion</h2>
+                <% } else { %>
+                    <% sendData.suggestion.forEach( eachSuggestion => {%>
+                        <div class="row border border-secondary rounded p-1 my-1">
+                            <div class="col-1">
+                                <img src="<%= eachSuggestion.profilePath%>" class="follow_profile_image">
+                            </div>
+                            <div class="col-4 text-left">
+                                <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0 username">
+                                    <%= eachSuggestion.username %>
+                                </p></div>
+                                <div class="col-12"><p class="text-secondary my-0 py-0">
+                                    <%= eachSuggestion.name %>
+                                </p></div>
+                            </div>
+                            <div class="col-5 offset-right-1 text-right">
+                                <button class="mt-2 btn btn-primary followBtn">Follow</button>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+
+        <%- include('../partials/footer.ejs') %>
+
+
+        <script src="/Js/following.js"></script>
+    </body>
+</html>

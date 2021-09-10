@@ -1,6 +1,17 @@
 const contact_us = document.getElementById('contact_us'),
-      logout = document.getElementById('logOut');
+      logout = document.getElementById('logOut'),
+      goBackBtn = document.getElementById('goBack'),
+      removeBtns = document.querySelectorAll('.removeBtn');
 
+goBackBtn.addEventListener('click', (event)=>{
+    window.location.href = '/home-page/profile';
+});
+
+removeBtns.forEach( removeBtn => {
+    removeBtn.addEventListener('click', (event)=>{
+
+    });
+})
 
 
 logout.addEventListener('click', (event)=>{
