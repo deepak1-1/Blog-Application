@@ -8,7 +8,7 @@ const notificationSchema = new Schema({
         required: [true, 'Please send username!']
     },
     data: {
-        type: String,
+        type: Object,
         required: [true, 'Please send data']
     },
     read: {

@@ -4,12 +4,10 @@ const Schema = mongoose.Schema;
 const requestSchema = new Schema({
 
     sender: {
-        type: String,
-        required: [true, 'Please fill sender!']
+        type: Array
     },
     receiver: {
-        type: String,
-        required: [true, 'Please fill receiver']
+        type: Array
     },
     accepted: {
         type: Boolean,

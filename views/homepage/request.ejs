@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("../partials/head.ejs")%>
+    <body>
+
+        <%- include('../partials/indexNav.ejs') %>
+        <div class="container-fluid firstdiv text-center">
+            <div class="col-6 offset-3" id="mainfollowingNotification"></div>
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="col-12 border border-secondary display-4 font-weight-bold m-1 mb-3 rounded">Sent</h1>
+                    <div class="col-10 offset-1 sent">
+                        <% if(!sendData.requestSend) {%>
+                            <h1 class="display-5 text-danger">No request Sent</h1>
+                        <% } else {%>
+
+                            <% sendData.requestSend.forEach( eachData =>{%>
+                                <div class="border border-secondary my-1 rounded row p-1">
+                                    <div class="col-2">
+                                        <img src="<%= eachData.userData[2]%>" class="sr_profile_image">
+                                    </div>
+                                    <div class="col-6 text-left">
+                                        <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0 username">
+                                            <%= eachData.userData[0] %>
+                                        </p></div>
+                                        <div class="col-12"><p class="text-secondary my-0 py-0 name">
+                                            <%= eachData.userData[1] %>
+                                        </p></div>
+                                        <div class="col-12"><p class="text-secondary my-0 py-0">
+                                            <%= eachData.dateTime %>
+                                        </p></div>
+                                    </div>
+                                    <div class="col-4 ">
+                                        <button class="mt-2 btn btn-outline-danger cancelBtn">Cancel Request</button>
+                                    </div>
+                                </div>
+                            <% })%>
+
+                        <% } %>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <h1 class="col-12 border border-secondary display-4 font-weight-bold m-1 mb-3 rounded">Received</h1>
+                    <div class="col-10 offset-1 received">
+                        <% if(!sendData.requestReceived) {%>
+                            <h1 class="display-5 text-danger">No request Received</h1>
+                        <% } else {%>
+                            <% sendData.requestReceived.forEach( eachData =>{%>
+                                <div class="border border-secondary my-1 rounded row p-1">
+                                    <div class="col-2 mt-1">
+                                        <img src="<%= eachData.userData[2]%>" class="sr_profile_image">
+                                    </div>
+                                    <div class="col-6 text-left mt-1">
+                                        <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0 username">
+                                            <%= eachData.userData[0] %>
+                                        </p></div>
+                                        <div class="col-12"><p class="text-secondary my-0 py-0 name">
+                                            <%= eachData.userData[1] %>
+                                        </p></div>
+                                        <div class="col-12"><p class="text-secondary my-0 py-0">
+                                            <%= eachData.dateTime %>
+                                        </p></div>
+                                    </div>
+                                    <div class="col-4 ">
+                                        <button class="btn btn-outline-primary acceptBtn col-12 my-1">Accept</button>
+                                        <button class="btn btn-outline-danger rejectBtn col-12 my-1">Reject</button>
+                                    </div>
+                                </div>
+                            <% })%>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>        
+
+        <%- include('../partials/footer.ejs') %>
+
+
+        <script src="/Js/request.js"></script>
+    </body>
+</html>

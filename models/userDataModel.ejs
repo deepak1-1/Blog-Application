@@ -22,6 +22,13 @@ const userDataSchema = new Schema({
         type: String,
         required: [true, 'Please fill gender']
     },
+    dob: {
+        type: String,
+        required: [true, 'Please fill dob']
+    },
+    bio : {
+        type: String
+    },
     followers: {
         type: Array
     },

@@ -43,6 +43,24 @@ const mailOptions = {
     text: ``
 }
 
+
+function returnProfilePath(data){
+    let profilePath = data.profilePath+data.profilePicName;
+    if(profilePath === "" || !profilePath){
+        if(data.gender === 'male'){
+            profilePath = '/Photos/male.jpg';
+        }else {
+            profilePath = '/Photos/female.jpg';
+        }
+    } else {
+        profilePath = profilePath.replace('./public', '');
+    }
+    return profilePath;
+}
+
+
+// ***************** main route function ***************
+
 const create_and_send_code  = (req, res) => {
 
 
@@ -175,11 +193,11 @@ const user_login = (req, res) => {
                                 if(data){
                                     res.cookie('jwt', '', {maxAge:1});
                                     if(req.body.rememberADay){
-                                        const token = createLoginToken( {username:req.body.username, name:data.name}, 'LoginAcess', 24*60 )//in mins
+                                        const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60 )//in mins
                                         res.cookie('jwtLoginAccess', token,  { httpOnly: true, maxAge: 24*60*60*1000} ); 
 
                                     }else {
-                                        const token = createLoginToken( {username:req.body.username, name:data.name}, 'LoginAcess', 24*60)//in mins
+                                        const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60)//in mins
                                         res.cookie('jwtLoginAccess', token);
                                     }
                                     res.send({ userfound: true, match: true , redirect: '/home-page'})

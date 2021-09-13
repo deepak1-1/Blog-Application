@@ -15,4 +15,6 @@ router.get('/create-blog', homepageController.get_create_blog);
 
 router.get('/request', homepageController.get_request_page);
 
+router.get('/notification', homepageController.get_notification_page);
+
 module.exports = router;

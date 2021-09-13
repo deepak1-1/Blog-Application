@@ -5,25 +5,26 @@
 
         <%- include('../partials/indexNav.ejs') %>
 
-        <div class="container mt-5 text-center firstdiv">
-            <div class="row">
-                <div class="col-2">
+        <div class="col-6 offset-3" id="mainfollowingNotification"></div>
+        <div class="container-fluid mt-5 text-center firstdiv row">
+            <div class="col-2 row">
+                <div class="col-12">
                     <button id="goBack" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Go Back</button>
                 </div>
-                <h1 class="display-4 col-8 offset-right-2 border border-secondary">Following</h1>
+                
             </div>
-            <div class="col-6 offset-3" id="mainNotification"></div>
 
-            <div class="col-6 offset-3">
+            <div class="col-5 p-1">
+                <h1 class="display-4 col-8 offset-2 border border-secondary">Following</h1>
                 <% if(!sendData.following){ %>
                     <h2 class="display-5 text-danger">No following</h2>
                 <% } else { %>
                     <% sendData.following.forEach( eachFollowing => {%>
-                        <div class="row border border-secondary rounded p-1">
+                        <div class="row border border-secondary rounded p-1 mx-1">
                             <div class="col-1">
                                 <img src="<%= eachFollowing.profilePath%>" class="follow_profile_image">
                             </div>
-                            <div class="col-4 text-left">
+                            <div class="col-7 text-left">
                                 <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0">
                                     <%= eachFollowing.username %>
                                 </p></div>
@@ -31,33 +32,34 @@
                                     <%= eachFollowing.name %>
                                 </p></div>
                             </div>
-                            <div class="col-3 offset-4">
-                                <button class="mt-2 btn btn-primary unfollowBtn">Unfollow</button>
+                            <div class="col-4">
+                                <button class="mt-2 btn btn-outline-danger unfollowBtn">Unfollow</button>
                             </div>
                         </div>
                     <% }) %>
                 <% } %>
             </div>
 
-            <h1 class="display-4 col-8 offset-2 border border-secondary">Suggestions</h1>
-            <div class="col-6 offset-3 mt-3">                
-                <% if(!sendData.suggestion){ %>
+            
+            <div class="col-5 p-1">
+                <h1 class="display-4 col-8 offset-2 border border-secondary">Suggestions</h1>                
+                <% if(sendData.suggestion.length === 0){ %>
                     <h2 class="display-5 text-danger">No suggestion</h2>
                 <% } else { %>
                     <% sendData.suggestion.forEach( eachSuggestion => {%>
-                        <div class="row border border-secondary rounded p-1 my-1">
-                            <div class="col-1">
+                        <div class="row border border-secondary rounded p-1 m-1">
+                            <div class="col-2">
                                 <img src="<%= eachSuggestion.profilePath%>" class="follow_profile_image">
                             </div>
-                            <div class="col-4 text-left">
+                            <div class="col-6 text-left">
                                 <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0 username">
                                     <%= eachSuggestion.username %>
                                 </p></div>
-                                <div class="col-12"><p class="text-secondary my-0 py-0">
+                                <div class="col-12"><p class="text-secondary my-0 py-0 name" >
                                     <%= eachSuggestion.name %>
                                 </p></div>
                             </div>
-                            <div class="col-5 offset-right-1 text-right">
+                            <div class="col-4 text-right">
                                 <button class="mt-2 btn btn-primary followBtn">Follow</button>
                             </div>
                         </div>

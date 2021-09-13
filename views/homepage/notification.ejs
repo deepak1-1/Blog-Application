@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("../partials/head.ejs")%>
+    <body>
+
+        <%- include('../partials/indexNav.ejs') %>
+        
+        <div class="container firstdiv text-center">
+            <h1 class="border border-secondary display-4 rounded font-weight-bold">Notification</h1>
+            <% if(!sendData.notification){%>
+                <h2 class="display-5 text-danger">No activity in Last 7 days!</h2>
+            <% } else {%>
+                <% sendData.notification.forEach( eachNotification => {%>
+                    <div class="col-6 offset-3 border border-secondary rounded p-1 text-left align-middle ">
+                        <p class="text-primary p-0 mb-0"><strong class="text-dark"><%= eachNotification.username%></strong> <%= eachNotification.text%></p>
+                    </div>
+                <% })%>
+            <% } %>
+        </div>      
+
+        <%- include('../partials/footer.ejs') %>
+
+
+        <script src="/Js/contactUs.js"></script>
+    </body>
+</html>

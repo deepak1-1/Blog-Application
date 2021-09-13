@@ -1,5 +1,5 @@
 
-const mainNotify = document.getElementById('mainNotification');
+const mainNotify = document.getElementById('mainfollowingNotification');
 
 const contact_us = document.getElementById('contact_us'),
       logout = document.getElementById('logOut'),
@@ -13,6 +13,8 @@ followBtns.forEach( followBtn =>{
 
         const fullDataDiv = event.target.parentElement.parentElement;
         const receiverUsername = fullDataDiv.querySelector('.username').innerText.trim();
+        const name = fullDataDiv.querySelector('.name').innerText;
+        const profilePath = fullDataDiv.querySelector('.follow_profile_image').getAttribute('src');
 
         if(event.target.innerText === 'Follow'){
 
@@ -21,16 +23,21 @@ followBtns.forEach( followBtn =>{
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ receiverUsername })
+                body: JSON.stringify({ receiverUsername, name, profilePath })
             })
                 .then(res => res.json())
                 .then(data =>{
 
-                    if(data.send){
+                    if(data.send && !data.already){
                         event.target.className = 'mt-2 btn btn-outline-danger followBtn';
                         event.target.innerText = 'Cancel Request';
-                    } else {
+                    } else if(!data.send && !data.already){
                         mainNotify.innerHTML = '<div class="alert alert-danger">Unable to send request!</div>';
+                        setTimeout( ()=>{
+                            mainNotify.innerHTML = '';
+                        }, 3000);
+                    } else if( !data.send && data.already ){
+                        mainNotify.innerHTML = '<div class="alert alert-info">Already sent! Please check request</div>';
                         setTimeout( ()=>{
                             mainNotify.innerHTML = '';
                         }, 3000);
@@ -47,7 +54,7 @@ followBtns.forEach( followBtn =>{
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify( {receiverUsername} )
+                body: JSON.stringify( {receiverUsername, name, profilePath } )
             })
               .then(res => res.json())
               .then(data => {

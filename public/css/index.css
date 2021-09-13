@@ -31,16 +31,17 @@
 
 
 .firstdiv {
-    margin-top: 80px !important;
+    margin-top: 10px !important;
 }
 
 ul#my_nav {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: black;
-  /*height: 60px;*/
+    position: sticky;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+    top: 0;
 }
 
 .nav_items {
@@ -134,4 +135,17 @@ input[type=file]::file-selector-button:hover {
     border-radius: 100%; 
     margin: 0px !Important; 
     padding:0px !Important;
+}
+
+.sr_profile_image {
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+}
+
+.mainfollowingNotification {
+  position: fixed;
+  /*top: 80px;*/
+  z-index: auto;
+
 }

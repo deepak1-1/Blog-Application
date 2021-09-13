@@ -5,18 +5,19 @@
 
         <%- include('../partials/indexNav.ejs') %>
 
-        <div class="container-fluid my-2 firstdiv text-center">
+        <div class="container-fluid firstdiv text-center mb-4">
             <div class="row">
                 <div class="col-2 offset-1">
-                    <img class="profileImage" src="<%= sendData.profilePath%>">
+                    <img class="profileImage" src="<%= sendData.profilePath%>"><br><br>
+                    <pre class="font-weight-bold"><%= sendData.bio%></pre>
                 </div>
                 <div class="col-8 row">
-                    <h2 class="display-4 font-weight-bolder col-4" id="followers">Followers <br><%= sendData.followers%></h2>
-                    <h2 class="display-4 font-weight-bolder col-4" id="following">Following <br><%= sendData.following%></h2>
-                    <h2 class="display-4 font-weight-bolder col-2" id="posts">Posts <br><%= sendData.totalposts%></h2>
+                    <h2 class="display-4 col-4" id="followers"><span class=" display-3 font-weight-bold"><%= sendData.followers%> </span><br>Followers</h2>
+                    <h2 class="display-4 col-4" id="following"><span class=" display-3 font-weight-bold"><%= sendData.following%> </span><br>Following</h2>
+                    <h2 class="display-4 col-2" id="posts"><span class=" display-3 font-weight-bold"><%= sendData.totalposts%> </span><br>Posts</h2>
                 </div>
-                <div class="col-8 offset-2 border border-secondary mt-4"></div>
-                <div class="col-6 offset-3 border border-secondary mt-4">
+                <div class="col-10 offset-1 border border-secondary mt-1"></div>
+                <div class="col-8 offset-2 border border-secondary mt-1">
                     <div class="row border border-secondary">
                         <h3 class="col-4 offset-2 font-weight-bolder display-5">Name:</h3> <p class="col-6 display-5 text-info"><%= sendData.name%></p>
                     </div>
@@ -25,6 +26,9 @@
                     </div>
                     <div class="row border border-secondary">
                         <h3 class="col-6 offset-1 font-weight-bolder display-5">Account Created on:</h3> <p class="col-4 display-5 text-info"><%= sendData.accountCreated%></p>
+                    </div>
+                    <div class="row border border-secondary">
+                        <h3 class="col-6 offset-1 font-weight-bolder display-5">Date of Birth:</h3> <p class="col-4 display-5 text-info"><%= sendData.dob%></p>
                     </div>
                     <div class="row border border-secondary">
                         <div class="col-6 offset-3">

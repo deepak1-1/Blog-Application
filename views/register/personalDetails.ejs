@@ -4,7 +4,7 @@
     <%- include("../partials/head.ejs")%>
     <body>
 
-        <div class="container border border-warning text-center p-4 mt-5">
+        <div class="container border border-warning text-center p-2 my-1">
         	<h1 class="display-4">Fill Some details!</h1>
             <div id="mainNotification"></div>
 
@@ -31,6 +31,22 @@
                     </div>
                     <div class="col-6 offset-1">
                       <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="form-row my-1">
+                    <div class="col-2 offset-2">
+                        <label for="DOB" class="font-weight-bold align-middle my-auto">Date of Birth:</label>
+                    </div>
+                    <div class="col-6 offset-1">
+                      <input type="date" class="form-control" id="DOB" placeholder="Enter DOB">
+                    </div>
+                </div>
+                <div class="form-row my-1">
+                    <div class="col-2 offset-2">
+                        <label for="bio" class="font-weight-bold align-middle my-auto">Bio:</label>
+                    </div>
+                    <div class="col-6 offset-1">
+                      <textarea type="date" rows='5' class="form-control" id="bio" placeholder="Write some bio"></textarea>
                     </div>
                 </div>
                 <div class="form-row my-1">

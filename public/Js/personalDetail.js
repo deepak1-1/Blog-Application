@@ -14,7 +14,9 @@ const agriculture = document.getElementById('agricultureTag'),
 	  name = document.getElementById('name'),
 	  gender = document.getElementsByName('gender'),
 	  username = document.getElementById('username'),
-	  email = document.getElementById('email');
+	  email = document.getElementById('email'),
+	  bio = document.getElementById('bio'),
+	  dob = document.getElementById('DOB');
 
 const Taglist = [ agriculture, sports, technology, art, homeScience, politics, photography, others]
 
@@ -35,8 +37,11 @@ nextBtn.addEventListener('click', async (e)=>{
 
 	const nameValue = name.value,
 		  emailValue = email.value,
-		  usernameValue = username.value;
-	let genderPass = false, namePass = false
+		  usernameValue = username.value,
+		  bioValue = bio.value.trim(),
+		  dobValue = dob.value;
+	
+	let genderPass = false, namePass = false, dobPass = false;
 
 	if(!genderValue){
 		const alertDiv = document.createElement('div');
@@ -60,7 +65,36 @@ nextBtn.addEventListener('click', async (e)=>{
 		},3000);
 	} else { namePass = true}
 
-	if(namePass && genderPass){
+
+	if(dobValue === ''){
+		const dobAlert = document.createElement('div');
+		dobAlert.className = 'my-0 col-8 offset-2 alert alert-danger';
+		dobAlert.innerText = 'Please select Date of birth!';
+		mainNotify.appendChild( dobAlert );
+
+		setTimeout( ()=>{
+			mainNotify.removeChild( dobAlert );
+		}, 3000);
+	} else {
+
+		const dobDate = new Date(dobValue),
+			  nowDate = new Date();
+
+		if(dobDate > nowDate){
+			const dobAlert = document.createElement('div');
+			dobAlert.className = 'my-0 col-8 offset-2 alert alert-danger';
+			dobAlert.innerText = 'Please select valid Date of birth!';
+			mainNotify.appendChild( dobAlert );
+
+			setTimeout( ()=>{
+				mainNotify.removeChild( dobAlert );
+			}, 3000);
+		} else {
+			dobPass = true;
+		}
+	}
+
+	if(namePass && genderPass && dobPass){
 
 		const interestedTag = [];
 		Taglist.forEach( element =>{
@@ -74,6 +108,8 @@ nextBtn.addEventListener('click', async (e)=>{
 			email: emailValue,
 			username: usernameValue,
 			gender: genderValue,
+			bio: bioValue,
+			dob: dobValue,
 			interestedTag
 		}
 		postOptions = {

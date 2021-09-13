@@ -2,7 +2,8 @@
 const jwt = require('jsonwebtoken');
 const loginDataModel = require('../models/signModel.ejs');
 const userDataModel = require('../models/userDataModel.ejs');
-const requestModel = require('../models/requestModel.ejs')
+const requestModel = require('../models/requestModel.ejs');
+const notificationModel = require('../models/notificationModel.ejs');
 
 function returnProfilePath(data){
 	let profilePath = data.profilePath+data.profilePicName;
@@ -31,7 +32,10 @@ const get_profile = async (req, res)=>{
 			following = data.following.length,
 			gender = data.gender,
 			totalposts = data.posts.length + data.privatePosts.length,
-			name = data.name;
+			name = data.name,
+			bio = data.bio;
+		let date = String(new Date(data.dob)).split(' ');
+			dob = `${date[2]} ${date[1]} ${date[3]}`;
 
 		let interestedTag = data.tagsInterested;
 
@@ -50,7 +54,9 @@ const get_profile = async (req, res)=>{
 			gender,
 			totalposts,
 			interestedTag,
-			accountCreated
+			accountCreated,
+			dob,
+			bio
 		}
 		res.render('homepage/profile', { title: 'Profile', stylesheet: '/css/index.css', sendData});
 	})
@@ -76,24 +82,23 @@ const get_create_blog = (req, res)=>{
 
 const get_followers = async (req, res)=>{
 
-	let sendData;
-	await userDataModel.findOne( { username: req.data.username }, (err, data)=>{
-		
+	const sendData = {
+					username: req.data.username,
+					name: req.data.name,
+					profile: true,
+					profilePath: req.data.profilePath,
+					followers: false
+				};
+	await userDataModel.findOne( { username: req.data.username }, async (err, data)=>{
 		if(err){
 			console.log('Error inside homepage controller get_followers'+err);
 		} else {
-
 			if(data.followers.length !== 0){
+				sendData.followers = [];
+				let datalen = data.followers.length;
 
-				sendData = {
-					name: data.name,
-					profile: true,
-					profilePath: returnProfilePath(data),
-					followers: []
-				}
-
-				data.followers.forEach(eachFollower => {
-					userDataModel.findOne( {username: eachFollower}, (err, followerData)=>{
+				for(let i=0; i< datalen;i++){
+					await userDataModel.findOne( {username: data.followers[i]}, (err, followerData)=>{
 						
 						if(err){
 							console.log('Error inside homepageController get_followers: '+err);
@@ -103,28 +108,26 @@ const get_followers = async (req, res)=>{
 								username: followerData.username,
 								profilePath: returnProfilePath( followerData )
 							}
-							sendData.followers.push( appendData )
+							sendData.followers.push( appendData );
 						}
 					} )
-				});
 
+					if((i+1) === datalen){
+						res.render('homepage/followers', { title: 'Followers', stylesheet: '/css/index.css', sendData});
+					}
+
+				};
 			} else {
-				sendData = {
-					name: data.name,
-					profile: true,
-					followers: false,
-					profilePath: returnProfilePath(data)
-				}
-			}
+				res.render('homepage/followers', { title: 'Followers', stylesheet: '/css/index.css', sendData});
+			} 
 		}
 	})
-	res.render('homepage/followers', { title: 'Followers', stylesheet: '/css/index.css', sendData});
 }
 
 const get_following = async (req, res) => {
 
 	let sendData, loginData, userFollowing, userFollowers;
-	await userDataModel.findOne( {username: req.data.username}, (err,data)=>{
+	await userDataModel.findOne( {username: req.data.username}, async (err,data)=>{
 		if(err){
 			console.log('Error inside homepage controller get_following'+err)
 		} else {
@@ -141,7 +144,7 @@ const get_following = async (req, res) => {
 					suggestion: []
 				}
 
-				data.following.forEach(eachFollowing => {
+				await data.following.forEach(eachFollowing => {
 					userDataModel.findOne( {username: eachFollowing}, (err, followingData)=>{
 						
 						if(err){
@@ -216,32 +219,110 @@ const get_following = async (req, res) => {
 	res.render('homepage/following', {title: 'Following', stylesheet: '/css/index.css', sendData})
 }
 
-const get_request_page = (req, res)=>{
+const get_request_page = async (req, res)=>{
 
-	let requestData, sendData;
+	let requestData;
 
-	await userDataModel.findOne( {username: req.data.username}, (err, data)=>{
-		if(err){
-			console.log(err);
-		} else {
-			console.log(data);
-		}
-	})
+	const sendData = {
+		request: true,
+		name: req.data.name,
+		username: req.data.username,
+		profilePath: req.data.profilePath,
+		requestSend: [],
+		requestReceived: []
+	}
 
 	await requestModel.find({receiver: req.data.username}, (err, data)=>{
 		if(err){
 			console.log('Error inside homepageController get_request_page: '+ err);
 		} else {
-			requestData = data;
+			if(data.length !== 0){
+
+				data.forEach( eachData =>{
+
+					const dateTime = String(eachData.createdAt).split(' ');
+					const formattedDateTime = `${dateTime[2]}/${dateTime[1]}/${dateTime[3]} ${dateTime[4].slice(0,5)}`
+
+					const pushData = {
+						userData: eachData.sender,
+						dateTime: formattedDateTime
+					}
+
+					sendData.requestReceived.push( pushData );
+				})
+
+			} else {
+				sendData.requestReceived = false;
+			}
 		}
 	})
 
-	if(requestData.length !== 0){
+	await requestModel.find({sender: req.data.username}, (err, data)=>{
+		if(err){
+			console.log('Error inside homepageController get_request_page: '+ err);
+		} else {
+			if(data.length !== 0){
 
-		await userDataModel.findOne
-	} else {
+				data.forEach( eachData =>{
 
+					const dateTime = String(eachData.createdAt).split(' ');
+					const formattedDateTime = `${dateTime[2]}/${dateTime[1]}/${dateTime[3]} ${dateTime[4].slice(0,5)}`
+
+					const pushData = {
+						userData: eachData.receiver,
+						dateTime: formattedDateTime
+					}
+
+					sendData.requestSend.push( pushData );
+				})
+
+			} else {
+				sendData.requestSend = false;
+			}
+		}
+	})
+	res.render('homepage/request', {title: 'Requests', stylesheet: '/css/index.css', sendData});
+}
+
+const get_notification_page = async (req, res)=>{
+
+	const sendData = {
+		notification: true,
+		name: req.data.name,
+		profilePath: req.data.profilePath,
+		username: req.data.username,
+		notification: false
 	}
+	let daysBackDate = new Date();
+	daysBackDate.setDate( daysBackDate.getDate() - 7);
+
+	await notificationModel.find( {username: req.data.username}, async (err, data)=>{
+		if(err){
+			console.log('Error inside homepageController get_notification_page: '+err);
+		} else {
+			if(data.length !== 0){
+				sendData.notification = [];
+				await data.forEach( eachData=>{
+					notificationDate = new Date(String(eachData.createdAt))
+					if(notificationDate>=daysBackDate){
+						
+						const appendData = {
+							read: eachData.read,
+							username: eachData.data.username,
+							text: eachData.data.text
+						}
+
+						sendData.notification.push(appendData);
+					} 
+				})
+				res.render('homepage/notification', {title: 'Notification', stylesheet: '/css/index.css', sendData});
+			} else {
+				res.render('homepage/notification', {title: 'Notification', stylesheet: '/css/index.css', sendData});
+			}
+		}
+	})
+
+
 }
 
 module.exports = {
@@ -249,5 +330,6 @@ module.exports = {
 	get_create_blog,
 	get_followers,
 	get_following,
-	get_request_page
+	get_request_page,
+	get_notification_page
 }

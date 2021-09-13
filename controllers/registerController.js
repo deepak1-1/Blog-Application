@@ -11,6 +11,19 @@ function createtoken( data, key, timeInMin ){
     })
 }
 
+function returnProfilePath(data){
+    let profilePath = data.profilePath+data.profilePicName;
+    if(profilePath === "" || !profilePath){
+        if(data.gender === 'male'){
+            profilePath = '/Photos/male.jpg';
+        }else {
+            profilePath = '/Photos/female.jpg';
+        }
+    } else {
+        profilePath = profilePath.replace('./public', '');
+    }
+    return profilePath;
+}
 
 // ************************ main routes functions ***************
 
@@ -40,7 +53,9 @@ const InsertUser = async (req, res)=>{
 		following: [],
 		posts: [],
 		privatePosts: [],
-		tagsInterested: req.body.interestedTag
+		tagsInterested: req.body.interestedTag,
+		dob: req.body.dob,
+		bio: req.body.bio
 	})
 	dataInsert.save()
 		.then(result =>{
@@ -62,43 +77,49 @@ const userImageInput = (req, res)=>{
 	res.render('register/userImage', {title: 'Profile Photo', stylesheet: false})
 }
 
-const saveUserImage = (req, res)=>{
+const saveUserImage = async (req, res)=>{
 
-	InsertUserDataModel.updateOne(
-			{'username': req.data.username}, //query
-	        {$set: {profilePicName: req.file.filename, profilePath: req.file.destination}}, // update
-	        {upsert: false},
-	        (err, data)=>{
+	try{
 
-	        	if(err){
-	        		console.log("Inside Image data: " + err);
-	        	} else {
+		await InsertUserDataModel.updateOne(
+				{'username': req.data.username}, //query
+		        {$set: {profilePicName: req.file.filename, profilePath: req.file.destination}}, // update
+		        {upsert: false},
+		        (err, data)=>{
 
-	        		userDataModel.findOne( {username: req.data.username}, (err, data)=>{
-	        			if(err){
-	        				console.log('Error Inside register Controller saveUserImage: '+err);
-	        			} else{
-	        				const token = createtoken( {username: req.data.username, name: data.name}, 'LoginAcess', 24*60 )//in mins
-							res.cookie('jwtProfilePhoto', '', {maxAge: 1})
-							res.cookie('jwtLoginAccess', token,  { httpOnly: true })
-							res.redirect( '/Home-page' );
-	        			}
-	        		})
-	        	}
+		        	if(err){
+		        		console.log("Inside Image data: " + err);
+		        	} else {
 
-	        }
-		)
+		        		InsertUserDataModel.findOne( {username: req.data.username}, (err, data)=>{
+		        			if(err){
+		        				console.log('Error Inside register Controller saveUserImage: '+err);
+		        			} else{
+		        				const token = createtoken( {username: req.data.username, name: data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60 )//in mins
+								res.cookie('jwtProfilePhoto', '', {maxAge: 1})
+								res.cookie('jwtLoginAccess', token,  { httpOnly: true })
+								res.redirect( '/Home-page' );
+		        			}
+		        		})
+		        	}
+
+		        }
+			)
+	} catch(err) {
+		console.log('Error inside registerController saveUserImage: '+err);
+		res.redirect('/register//profile-photo');
+	}
 	
 }
 
 const skipUserImage = (req, res)=>{
 
 	if(req.body.skip){
-		userDataModel.findOne( {username: req.data.username}, (err, data)=>{
+		InsertUserDataModel.findOne( {username: req.data.username}, (err, data)=>{
 			if(err){
 				console.log('Error Inside register Controller saveUserImage: '+err);
 			} else{
-				const token = createtoken( {username: req.data.username, name: data.name}, 'LoginAcess', 24*60 )//in mins
+				const token = createtoken( {username: req.data.username, name: data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60 )//in mins
 				res.cookie('jwtProfilePhoto', '', {maxAge: 1})
 				res.cookie('jwtLoginAccess', token,  { httpOnly: true })
 				res.redirect( '/Home-page' );

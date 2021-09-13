@@ -18,4 +18,8 @@ router.post('/unfollow', auth.checkLoginAccess, basicController.unfollow);
 
 router.post('/cancel-request', auth.checkLoginAccess, basicController.cancel_request);
 
+router.post('/accept-request', auth.checkLoginAccess, basicController.accept_request);
+
+router.post('/reject-request', auth.checkLoginAccess, basicController.reject_request);
+
 module.exports = router;

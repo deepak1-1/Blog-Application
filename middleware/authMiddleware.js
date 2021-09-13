@@ -105,10 +105,10 @@ const checkLoginAccess = (req, res, next) =>{
 				}
 			} else {
 				if(req.url === '/'){
-					req.data = {username: decodedToken.data.username}
+					req.data = {username: decodedToken.data.username, name: decodedToken.data.name, profilePath: decodedToken.data.profilePath, login: true}
 					res.redirect('/home-page')
 				} else{
-					req.data = {username: decodedToken.data.username, name: decodedToken.data.name, login: true};
+					req.data = {username: decodedToken.data.username, name: decodedToken.data.name, profilePath: decodedToken.data.profilePath, login: true};
 					next();		
 				}
 			}
