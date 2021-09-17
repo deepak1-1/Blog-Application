@@ -7,7 +7,7 @@
 
         <div class="container firstdiv text-center mb-3">
             <!-- <h1 class="pills display-4 col-6 offset-3">Fill Blog Data</h1> -->
-            <form class="col-10 offset-1 border border-secondary rounded mt-3 p-3">
+            <form class="col-10 offset-1 border border-secondary rounded mt-3 p-3" id="blogForm">
                 <div class="form-row my-2 text-left">
                     <div class="col-3 offset-right-1">
                         <label for="title" class="font-weight-bold align-middle my-auto">Title:</label>
@@ -16,6 +16,7 @@
                       <input type="text" class="form-control" id="title" placeholder="Enter blog title" name="title" >
                     </div>
                 </div>
+                <div class="col-8 offset-2" id="titleNotification"></div>
                 <div class="form-row my-2 text-left">
                     <div class="col-3 offset-right-1">
                         <label for="tags" class="font-weight-bold align-middle my-auto">Blog Tag(multiple):</label>
@@ -33,14 +34,16 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-8 offset-2" id="tagsNotification"></div>
                 <div class="form-row my-2 text-left">
                     <div class="col-3 offset-right-1">
                         <label for="blog" class="font-weight-bold align-middle my-auto">Blog:</label>
                     </div>
                     <div class="col-8">
-                      <textarea name="blog" rows='10' placeholder="Write blog ....." class="p-2 rounded form-control w-100 h-100"></textarea>
+                      <textarea name="blog" rows='10' placeholder="Write blog ....." class="p-2 rounded form-control w-100 h-100" id="blog"></textarea>
                     </div>
                 </div>
+                <div class="col-8 offset-2" id="blogNotification"></div>
                 <div class="form-row my-2 text-left">
                     <div class="col-3 offset-right-1">
                         <label for="post" id="publicPrivate" class="font-weight-bold align-middle my-auto">Public or Private:</label>
@@ -54,16 +57,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-8 offset-2" id="publicPrivateNotification"></div>
                 <div class="form-row my-2 text-left">
                     <div class="col-3 offset-right-1">
-                        <label for="blogImage" class="font-weight-bold align-middle my-auto">Blog Images:</label>
+                        <label for="blogImages" class="font-weight-bold align-middle my-auto">Blog Images:</label>
                     </div>
                     <div class="col-8">
-                      <input type="file" name="blogImage" class="border border-secondary w-100 rounded" multiple>
+                      <input type="file" name="blogImages" class="border border-secondary w-100 rounded" multiple accept="image/*">
                     </div>
                 </div>
+                <div class="col-8 offset-2" id="imageNotification"></div>
                 <div class="row my-2 text-center">
-                    <button type="submit" class="btn btn-primary col-4 offset-4">Create It</button>
+                    <button type="submit" class="btn btn-primary col-4 offset-4" id="createBtn">Create It</button>
                 </div>
             </form>
         </div>
@@ -71,6 +76,6 @@
         <%- include('../partials/footer.ejs') %>
 
 
-        <script src="/Js/contactUs.js"></script>
+        <script src="/Js/createBlog.js"></script>
     </body>
 </html>

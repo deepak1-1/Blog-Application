@@ -12,18 +12,18 @@
                 </div>
                 <h1 class="display-4 col-8 offset-right-2 border border-secondary">Followers</h1>
             </div>
-
-            <div class="col-6 offset-3">
+            <div id="mainNotification" class="col-8 offset-2"></div>
+            <div class="col-6 offset-3 followersDiv">
                 <% if(!sendData.followers){ %>
                     <h2 class="display-4 text-danger">No followers</h2>
                 <% } else { %>
                     <% sendData.followers.forEach( eachFollower => {%>
-                        <div class="row border border-secondary rounded p-1">
+                        <div class="row border border-secondary rounded p-1 followers">
                             <div class="col-1">
                                 <img src="<%= eachFollower.profilePath%>" class="follow_profile_image">
                             </div>
                             <div class="col-4 text-left">
-                                <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0">
+                                <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0 username">
                                     <%= eachFollower.username %>
                                 </p></div>
                                 <div class="col-12"><p class="text-secondary my-0 py-0">

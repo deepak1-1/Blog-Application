@@ -77,8 +77,40 @@ followBtns.forEach( followBtn =>{
 })
 
 unfollowBtns.forEach( unfollowBtn => {
-    unfollowBtn.addEventListener('click', (event)=>{
+    unfollowBtn.addEventListener('click', async (e)=>{
 
+        const mainDataDiv = e.target.parentElement.parentElement;
+        const username = mainDataDiv.querySelector('.username').innerText.trim();
+
+        await fetch('/unfollow', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify( {username} )
+        })
+        .then(res => res.json())
+        .then(data => {
+            
+            if(data.unfollowed){
+
+                e.target.innerText = 'Unfollowed';
+                setTimeout( ()=>{
+                    mainDataDiv.remove();
+                },3000);
+            } else {
+                mainNotify.innerHTML = '<div class="alert alert-danger">Unable to Unfollow!</div>';
+                setTimeout( ()=>{
+                    mainNotify.innerHTML = '';
+                    if(document.querySelectorAll('.unfollowBtn').length === 0){
+                        document.getElementById('followingDiv').innerHTML = '<h2 class="display-5 text-danger">No following</h2>';
+                    }
+                }, 3000);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
     })
 });
 

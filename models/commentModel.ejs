@@ -1,0 +1,21 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const commentSchema = new Schema({
+
+    userdata: {
+        type: Object
+    },
+    blogId: {
+        type: String
+    },
+    parentCommentId: {
+        type: String
+    },
+    comment: {
+        type: String
+    }
+}, {timestamps : true});
+
+const commentDataModel = mongoose.model('commentData', commentSchema);
+module.exports = commentDataModel;

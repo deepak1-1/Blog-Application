@@ -11,8 +11,9 @@
                 <h2 class="display-5 text-danger">No activity in Last 7 days!</h2>
             <% } else {%>
                 <% sendData.notification.forEach( eachNotification => {%>
-                    <div class="col-6 offset-3 border border-secondary rounded p-1 text-left align-middle ">
-                        <p class="text-primary p-0 mb-0"><strong class="text-dark"><%= eachNotification.username%></strong> <%= eachNotification.text%></p>
+                    <div class="col-6 offset-3 border border-secondary rounded p-1 text-left align-middle row p-2">
+                        <p class="text-primary p-0 mb-0 col-8"><strong class="text-dark"><%= eachNotification.username%></strong> <%= eachNotification.text%></p>
+                        <p class="text-secondary p-0 mb-0 col-4 text-right"><italic><%= eachNotification.dateTime%></italic></p>
                     </div>
                 <% })%>
             <% } %>

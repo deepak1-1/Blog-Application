@@ -16,6 +16,7 @@
 
             <div class="col-5 p-1">
                 <h1 class="display-4 col-8 offset-2 border border-secondary">Following</h1>
+                <div id="followingDiv"></div>
                 <% if(!sendData.following){ %>
                     <h2 class="display-5 text-danger">No following</h2>
                 <% } else { %>
@@ -25,7 +26,7 @@
                                 <img src="<%= eachFollowing.profilePath%>" class="follow_profile_image">
                             </div>
                             <div class="col-7 text-left">
-                                <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0">
+                                <div class="col-12"><p class="align-middle font-weight-bold my-0 py-0 username">
                                     <%= eachFollowing.username %>
                                 </p></div>
                                 <div class="col-12"><p class="text-secondary my-0 py-0">

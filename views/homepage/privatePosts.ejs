@@ -5,20 +5,15 @@
 
         <%- include('../partials/indexNav.ejs') %>
 
-        <% if(sendData.postsData.length === 0){%>
-            <h1 class="text-danger firstdiv display-4 text-center">No activity from you and people you are following!</h1>
+        <% if(sendData.privatePosts.length === 0){%>
+            <h1 class="text-danger firstdiv display-4 text-center">There is no private post you created! </h1>
         <% } else {%>
             <div class="container firstdiv text-center">
                 <div class="row">
-                    <% sendData.postsData.forEach( eachPost =>{%>
+                    <% sendData.privatePosts.forEach( eachPost =>{%>
                         <div class="col-8 offset-2 my-2 w-50 p-2 border border-secondary rounded text-center" data-doc="<%= eachPost.postId%>">
                             <div class="clearfix mx-2 mb-0">
-                                <span class="text-secondary float-left"> ~ 
-                                    <% if(eachPost.username === sendData.username){%>
-                                        <strong>you</strong>
-                                    <% } else {%>
-                                        <strong><%= eachPost.username%></strong>
-                                    <% } %>
+                                <span class="text-secondary float-left"> ~ <strong>you</strong>
                                 </span>
                                 <span class="text-secondary float-right"> <%= eachPost.dateTime%></span>
                             </div>
@@ -35,7 +30,7 @@
                                     <p class=" mx-1 p-1 border border-secondary rounded"><%= tag%></p>
                                 <% } ) %>
                             </div>
-                            <% const length= eachPost.imagesPath.length%>
+                            <% const length = eachPost.imagesPath.length%>
                             <% if(length>0){%>
                                     <div id="blogImage<%= eachPost.postId%>" class="carousel-slide" data-ride="carousel" data-interval="3000">
 

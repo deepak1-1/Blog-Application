@@ -4,6 +4,7 @@ const loginDataModel = require('../models/signModel.ejs');
 const userDataModel = require('../models/userDataModel.ejs');
 const requestModel = require('../models/requestModel.ejs');
 const notificationModel = require('../models/notificationModel.ejs');
+const blogDataModel = require('../models/blogDataModel.ejs');
 
 function returnProfilePath(data){
 	let profilePath = data.profilePath+data.profilePicName;
@@ -306,10 +307,13 @@ const get_notification_page = async (req, res)=>{
 					notificationDate = new Date(String(eachData.createdAt))
 					if(notificationDate>=daysBackDate){
 						
+						notificationDate = String(notificationDate).split(' ');
+						notificationDate = `${notificationDate[2]}/${notificationDate[1]}/${notificationDate[3]} ${notificationDate[4].slice(0,5)}`
 						const appendData = {
 							read: eachData.read,
 							username: eachData.data.username,
-							text: eachData.data.text
+							text: eachData.data.text,
+							dateTime: notificationDate
 						}
 
 						sendData.notification.push(appendData);
@@ -325,11 +329,55 @@ const get_notification_page = async (req, res)=>{
 
 }
 
+const get_private_posts = async (req, res)=>{
+
+	const sendData = {
+		privatePost: true,
+		username: req.data.username,
+		name: req.data.name,
+		profilePath: req.data.profilePath,
+		privatePosts: []
+	}
+
+	blogDataModel.find({username: req.data.username, private: true},(err, data)=>{
+		if(err){
+			console.log(err);
+		} else {
+			data.forEach( eachPost=>{
+
+				let dateTime = String((new Date(Number(eachPost.createdTimestamp))));
+                dateTime = dateTime.split(' ');
+                dateTime = `${dateTime[2]}/${dateTime[1]}/${dateTime[3]} ${dateTime[4].slice(0,5)}`
+                
+
+				const appendData = {
+                            username: req.data.username,
+                            postId: eachPost.id,
+                            postTags: eachPost.tags,
+                            createdBy: eachPost.createdBy,
+                            dateTime,
+                            title: eachPost.title,
+                            imagesPath: eachPost.imagesPath,
+                            likesUsername: eachPost.likesUsername,
+                            data: eachPost.data
+                        }
+                sendData.privatePosts.push( appendData );
+			})
+
+			res.render('homepage/privatePosts', {title: 'Private Post', stylesheet: '/css/index.css', sendData});
+		}
+	})
+}
+
+const get_posts = (req, res)=>{}
+
 module.exports = {
 	get_profile,
 	get_create_blog,
 	get_followers,
 	get_following,
 	get_request_page,
-	get_notification_page
+	get_notification_page,
+	get_private_posts,
+	get_posts
 }

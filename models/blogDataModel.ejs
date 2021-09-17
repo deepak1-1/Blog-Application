@@ -1,0 +1,37 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const blogSchema = new Schema({
+
+    private: {
+        type: Boolean
+    },
+    imagesPath: {
+        type: Array
+    },
+    likesUsername: {
+        type: Array
+    },
+    title: {
+        type: String
+    },
+    data: {
+        type: String
+    },
+    tags: {
+        type: Array
+    },
+    createdTimestamp: {
+        type: String
+    },
+    username: {
+        type: String
+    },
+    createdBy: {
+        type: Object
+    }
+
+}, {timestamps : true});
+
+const blogDataModel = mongoose.model('blogData', blogSchema);
+module.exports = blogDataModel;

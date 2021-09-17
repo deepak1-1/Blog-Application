@@ -9,7 +9,9 @@ router.get('/followers', homepageController.get_followers);
 
 router.get('/following', homepageController.get_following);
 
-router.get('/posts', );
+router.get('/posts', homepageController.get_posts);
+
+router.get('/private-post', homepageController.get_private_posts);
 
 router.get('/create-blog', homepageController.get_create_blog);
 

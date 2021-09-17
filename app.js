@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const basicRoutes = require('./routes/basicRoutes');
-// const blogRoutes = require('./routes/blogRoutes');
+const blogRoutes = require('./routes/blogRoutes');
 const signRoutes = require('./routes/sign_in_upRoutes');
 const hompageRoutes = require('./routes/homepageRoutes');
 const registerRoutes = require('./routes/registerRoutes');
@@ -61,8 +61,9 @@ app.use('/register', registerRoutes)
 
 // home page routes
 app.use('/home-page', Auth.checkLoginAccess, hompageRoutes);
+
 // blog routes
-// app.use('/blog', Auth.checkLoginAccess ,blogRoutes);
+app.use('/blog', blogRoutes);
 
 // default route
 app.use((req, res)=>{

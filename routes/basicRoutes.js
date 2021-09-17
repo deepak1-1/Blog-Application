@@ -22,4 +22,6 @@ router.post('/accept-request', auth.checkLoginAccess, basicController.accept_req
 
 router.post('/reject-request', auth.checkLoginAccess, basicController.reject_request);
 
+router.post('/remove', auth.checkLoginAccess, basicController.remove_follower);
+
 module.exports = router;
