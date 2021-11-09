@@ -5,16 +5,19 @@ const jwt = require('jsonwebtoken');
 const checkForSignInUpForgetPassword = (req, res, next) =>{
 
 	const token = req.cookies.jwt;
+	console.log('Inside middleware');
 	if(token){
-
+		console.log(token);
 		jwt.verify(token, 'SignInUPForgetPassword', (err, decodedToken)=>{
 			if(err){
+				console.log(err);
 				res.redirect('/');
 			} else {
 				next();
 			}
 		})
 	} else {
+		console.log(token);
 		res.redirect('/');
 	}
 

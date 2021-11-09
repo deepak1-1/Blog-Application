@@ -1,0 +1,15 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const multiCommentSchema = new Schema({
+
+    commentId: {
+        type: String
+    },
+    replyId: {
+        type: String
+    }
+} );    
+
+const multiCommentData = mongoose.model('MultiCommentData', multiCommentSchema);
+module.exports = multiCommentData;

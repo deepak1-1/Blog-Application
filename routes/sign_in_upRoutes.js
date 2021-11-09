@@ -8,6 +8,13 @@ router.post('/check-user', auth.checkForSignInUpForgetPassword, sign_in_upContro
 
 router.post('/login', auth.checkForSignInUpForgetPassword, sign_in_upController.user_login);
 
+router.post('/login1', async (req, res)=>{
+
+    console.log('Inside Login!');
+    console.log(req.body);
+
+})
+
 router.get('/sign-Up', sign_in_upController.register_user);
 
 router.get('/verification', auth.checkUserValidForVerification,  (req, res)=> {

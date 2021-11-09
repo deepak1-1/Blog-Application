@@ -5,6 +5,15 @@ const contact_us = document.getElementById('contact_us'),
 	  posts = document.getElementById('posts'),
 	  logout = document.getElementById('logOut');
 
+const profilepic = document.querySelector('.profileImage'),
+	  imageModal = document.getElementById('imageModal');
+
+profilepic.addEventListener('click', (event)=>{
+
+	console.log(event.target.parentElement, event.target.src);
+	imageModal.style.display = "block";
+
+});
 
 followers.addEventListener('click', (event)=>{
 	window.location.href = '/home-page/followers';

@@ -114,6 +114,8 @@ const verify_code = (req, res) => {
 
 const check_user = async (req, res) => {
 
+    console.log('Inside user');
+
     const resData = {'found': false, 'limitExceed': false}
 
     await loginDataModel.find({'email': req.body.email}, (err, data)=>{
@@ -171,6 +173,8 @@ const register_user = (req, res) => {
 
 
 const user_login = (req, res) => {
+
+    console.log('Inside login')
 
     loginDataModel.findOne( { 'username': req.body.username }, (error, data)=>{
         if( error){

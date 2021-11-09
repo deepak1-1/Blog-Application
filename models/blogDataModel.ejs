@@ -29,6 +29,9 @@ const blogSchema = new Schema({
     },
     createdBy: {
         type: Object
+    },
+    comments: {
+        type: Array
     }
 
 }, {timestamps : true});

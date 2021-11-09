@@ -35,7 +35,8 @@ const create_blog = async (req, res)=>{
         tags: req.body.tags,
         createdTimestamp: Date.now(),
         createdBy: req.data,
-        username: req.data.username
+        username: req.data.username,
+        comments: []
     })
 
     blogSave.save()

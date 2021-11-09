@@ -5,6 +5,8 @@
 
         <%- include('../partials/indexNav.ejs') %>
 
+        <div id="mainDiv"></div>
+
         <% if(sendData.postsData.length === 0){%>
             <h1 class="text-danger firstdiv display-4 text-center">No activity from you and people you are following!</h1>
         <% } else {%>
@@ -13,7 +15,7 @@
                     <% sendData.postsData.forEach( eachPost =>{%>
                         <div class="col-8 offset-2 my-2 w-50 p-2 border border-secondary rounded text-center" data-doc="<%= eachPost.postId%>">
                             <div class="clearfix mx-2 mb-0">
-                                <span class="text-secondary float-left"> ~ 
+                                <span class="text-secondary float-left postCreatedBy"> ~ 
                                     <% if(eachPost.username === sendData.username){%>
                                         <strong>you</strong>
                                     <% } else {%>
@@ -76,15 +78,10 @@
                                         <% } else { %>
                                             <i class="far fa-heart likeBtn" style="font-size: 20px;"></i>
                                         <% } %>
-                                    </span> 
-                                    <% if(eachPost.likesUsername.length === 0){%>
-                                        0
-                                    <% } else if(eachPost.likesUsername.length === 1){%>
-                                        <%= eachPost.likesUsername[0]%>
-                                    <% } else { %>
-                                        <%= eachPost.likesUsername[0]%> and <%= (eachPost.likesUsername.length - 1)%>
-                                    <% } %>
-
+                                    </span>
+                                    <span class="likeData">
+                                        <%= eachPost.likesUsername.length %> Likes
+                                    </span>
                                 </div>
                                 <div class="float-right">
                                     <i class="fas fa-comments commentBtn" style="font-size: 20px;"></i>
@@ -97,6 +94,6 @@
         <% } %>
 
         <%- include('../partials/footer.ejs') %>
-        <script src="/Js/contactUs.js"></script>
+        <script src="/Js/index.js"></script>
     </body>
 </html>

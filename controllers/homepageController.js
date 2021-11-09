@@ -23,7 +23,7 @@ function returnProfilePath(data){
 
 // *****************main routes functions *************
 
-const get_profile = async (req, res)=>{
+const get_profile = (req, res)=>{
 
 	userDataModel.findOne( {username: req.data.username}, (err, data)=>{
 
@@ -198,18 +198,20 @@ const get_following = async (req, res) => {
 						if(err){
 							console.log('Error inside homepageController get_following: '+err);
 						} else {
+
 							if(!suggestionData){
 								if(loginData.length>loop){
 									loop+=1
 								}
 							} else {
-								
-								const appendData = {
-									username: suggestionData.username,
-									name: suggestionData.name,
-									profilePath: returnProfilePath(suggestionData)
+								if(!userFollowing.includes(loginData[i].username)){
+									const appendData = {
+										username: suggestionData.username,
+										name: suggestionData.name,
+										profilePath: returnProfilePath(suggestionData)
+									}
+									sendData.suggestion.push(appendData);
 								}
-								sendData.suggestion.push(appendData);
 							}
 						}
 					} )
@@ -369,7 +371,72 @@ const get_private_posts = async (req, res)=>{
 	})
 }
 
-const get_posts = (req, res)=>{}
+const get_posts = async (req, res)=>{
+
+	const sendData = {
+		profile: true,
+		username: req.data.username,
+		name: req.data.name,
+		profilePath: req.data.profilePath,
+		posts: []
+	}
+
+	let fetchedPostData = await blogDataModel.find({username: req.data.username, private: false})
+
+	if(fetchedPostData){
+
+		fetchedPostData.forEach( eachPost=>{
+
+			let dateTime = String((new Date(Number(eachPost.createdTimestamp))));
+                dateTime = dateTime.split(' ');
+                dateTime = `${dateTime[2]}/${dateTime[1]}/${dateTime[3]} ${dateTime[4].slice(0,5)}`
+                
+
+				const appendData = {
+                            username: req.data.username,
+                            postId: eachPost.id,
+                            postTags: eachPost.tags,
+                            createdBy: eachPost.createdBy,
+                            dateTime,
+                            title: eachPost.title,
+                            imagesPath: eachPost.imagesPath,
+                            likesUsername: eachPost.likesUsername,
+                            data: eachPost.data
+                        }
+                sendData.posts.push( appendData );
+
+		})
+
+		// console.log(sendData)
+		res.render('homepage/posts', {title: 'My Posts', stylesheet: '/css/index.css', sendData});
+	} else {
+		console.log('Some Error inside get_posts homepageController');
+		res.render('homepage/posts', {title: 'My Posts', stylesheet: '/css/index.css', sendData});
+	}
+}
+
+
+const delete_post = async (req, res)=>{
+
+	let post_deleted = await blogDataModel.deleteOne({_id: req.body.postId})
+	// let comment_deleted
+	if(req.body.private){
+		let removed_from_data = await userDataModel.updateOne({username: req.data.username}, {$pull: {privatePosts: req.body.postId}})
+		if(post_deleted.deletedCount && removed_from_data.nModified){
+			res.send({deleted: true})
+		} else {
+			res.send({deleted: false})
+		}
+	} else {
+		let removed_from_data = await userDataModel.updateOne({username: req.data.username}, {$pull: {posts: req.body.postId}})
+		if(post_deleted.deletedCount && removed_from_data.nModified){
+			res.send({deleted: true})
+		} else {
+			res.send({deleted: false})
+		}
+	}
+
+}
 
 module.exports = {
 	get_profile,
@@ -379,5 +446,6 @@ module.exports = {
 	get_request_page,
 	get_notification_page,
 	get_private_posts,
-	get_posts
+	get_posts,
+	delete_post
 }

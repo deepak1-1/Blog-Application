@@ -19,4 +19,6 @@ router.get('/request', homepageController.get_request_page);
 
 router.get('/notification', homepageController.get_notification_page);
 
+router.post('/delete-post', homepageController.delete_post);
+
 module.exports = router;

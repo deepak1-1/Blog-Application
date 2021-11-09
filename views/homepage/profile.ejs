@@ -10,6 +10,25 @@
                 <div class="col-2 offset-1">
                     <img class="profileImage" src="<%= sendData.profilePath%>"><br><br>
                     <pre class="font-weight-bold"><%= sendData.bio%></pre>
+                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            ...
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
                 <div class="col-8 row">
                     <h2 class="display-4 col-4" id="followers"><span class=" display-3 font-weight-bold"><%= sendData.followers%> </span><br>Followers</h2>
@@ -17,7 +36,7 @@
                     <h2 class="display-4 col-2" id="posts"><span class=" display-3 font-weight-bold"><%= sendData.totalposts%> </span><br>Posts</h2>
                 </div>
                 <div class="col-10 offset-1 border border-secondary mt-1"></div>
-                <div class="col-8 offset-2 border border-secondary mt-1">
+                <div class="col-8 offset-2 border border-secondary rounded mt-1">
                     <div class="row border border-secondary">
                         <h3 class="col-4 offset-2 font-weight-bolder display-5">Name:</h3> <p class="col-6 display-5 text-info"><%= sendData.name%></p>
                     </div>

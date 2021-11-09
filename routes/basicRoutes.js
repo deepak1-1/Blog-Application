@@ -24,4 +24,10 @@ router.post('/reject-request', auth.checkLoginAccess, basicController.reject_req
 
 router.post('/remove', auth.checkLoginAccess, basicController.remove_follower);
 
+router.post('/like', auth.checkLoginAccess, basicController.like)
+
+router.post('/dislike', auth.checkLoginAccess, basicController.dislike)
+
+router.post('/:username', auth.checkLoginAccess, basicController.show_user)
+
 module.exports = router;
