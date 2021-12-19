@@ -30,7 +30,7 @@ toggle_btn.forEach(element => {
 
 
 // signIn handling
-signInBtn.addEventListener('click', async (e)=>{
+signInBtn.addEventListener('click', (e)=>{
 
     let username = document.getElementById('usernamesignIn').value,
         password = document.getElementById('pwdSignIn').value,
@@ -71,31 +71,30 @@ signInBtn.addEventListener('click', async (e)=>{
             body: JSON.stringify( { username, password, rememberADay} )
         }
 
-        await fetch('/login1', postOptions)
+        fetch('/login', postOptions)
             .then(res => {console.log(res);})
-                // .then( data => {
-                //     console.log(data);
-                //     if ( !data.userfound){
-                //         userNotify.innerText = 'Invalid username or user don\'t exist';
-                //         userNotify.style.color = 'red';
+                .then( data => {
+                    if ( !data.userfound){
+                        userNotify.innerText = 'Invalid username or user don\'t exist';
+                        userNotify.style.color = 'red';
 
-                //         setTimeout( () => {
-                //             userNotify.innerText = '';
-                //         }, 3000)
-                //     } else {
-                //         if (!data.match){
-                //             passwordNotify.innerText = 'Password Incorrect!';
-                //             passwordNotify.style.color = 'red';
+                        setTimeout( () => {
+                            userNotify.innerText = '';
+                        }, 3000)
+                    } else {
+                        if (!data.match){
+                            passwordNotify.innerText = 'Password Incorrect!';
+                            passwordNotify.style.color = 'red';
 
-                //             setTimeout( ()=>{
-                //                 passwordNotify.innerText = '';
-                //             }, 3000)
-                //         } else {
+                            setTimeout( ()=>{
+                                passwordNotify.innerText = '';
+                            }, 3000)
+                        } else {
                             
-                //             window.location.href = data.redirect;
-                //         }
-                //     }
-                // })
+                            window.location.href = data.redirect;
+                        }
+                    }
+                })
                 .catch( err => {
                     console.log(err);
                 })
@@ -182,7 +181,7 @@ verificationBtn.addEventListener('click',async (e)=> {
             emailNotify.style.color = 'white';
 
             await fetch('/check-user', postOptionsUserCheck)
-                .then(res => (res.json()))
+                .then(res => res.json())
                 .then(data => {
                     if(data.found){
 

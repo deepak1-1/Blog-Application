@@ -18,14 +18,18 @@ const Auth = require('./middleware/authMiddleware');
 // express app
 const app = express();
 
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 // connect to database
 const dbURI = 'mongodb://localhost:27017/Blog_Data'
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((result)=>{
 
         //listen over requests
-        app.listen(4000, ()=>{
-            console.log('Listening to port 4000');
+        app.listen(3500, ()=>{
+            console.log('Listening to port 3500');
         });
     })
     .catch(err => {console.log(err)});
@@ -48,7 +52,9 @@ app.use(cookieParser());
 
 
 // basic routes
+// app.use('/', auth.checkLoginAccess, basicRoutes);
 app.use('/', basicRoutes);
+
 
 // sign in and up routes
 app.use('/', signRoutes);

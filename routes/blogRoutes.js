@@ -26,6 +26,6 @@ const upload = multer({
 
 // main routes
 
-router.post('/create-blog', upload.array('blogImages'), auth.checkLoginAccess, blogController.create_blog);
+router.post('/create-blog', upload.array('blogImages'), blogController.create_blog);
 
 module.exports = router;

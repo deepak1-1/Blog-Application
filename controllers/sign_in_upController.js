@@ -174,52 +174,54 @@ const register_user = (req, res) => {
 
 const user_login = (req, res) => {
 
-    console.log('Inside login')
+    console.log('Inside login');
 
-    loginDataModel.findOne( { 'username': req.body.username }, (error, data)=>{
-        if( error){
-            console.log(error);
-        } else {
-            if (!data){
-                res.send({ userfound: false, match: false });
-            } else {
-                bcrypt.compare(req.body.password, data.password, (err, isMatch)=>{
-                    if (err){
-                        console.log(err);
-                    } else if (!isMatch) {
-                        res.send({ userfound: true, match: false });
-                    } else {
+    res.send("Hello");
 
-                        userDataModel.findOne( {username: req.body.username}, (err, data)=>{
-                            if(err){
-                                console.log("Error inside User Login: "+err)
-                            } else {
-                                if(data){
-                                    res.cookie('jwt', '', {maxAge:1});
-                                    if(req.body.rememberADay){
-                                        const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60 )//in mins
-                                        res.cookie('jwtLoginAccess', token,  { httpOnly: true, maxAge: 24*60*60*1000} ); 
+    // loginDataModel.findOne( { 'username': req.body.username }, (error, data)=>{
+    //     if( error){
+    //         console.log(error);
+    //     } else {
+    //         if (!data){
+    //             res.send({ userfound: false, match: false });
+    //         } else {
+    //             bcrypt.compare(req.body.password, data.password, (err, isMatch)=>{
+    //                 if (err){
+    //                     console.log(err);
+    //                 } else if (!isMatch) {
+    //                     res.send({ userfound: true, match: false });
+    //                 } else {
 
-                                    }else {
-                                        const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60)//in mins
-                                        res.cookie('jwtLoginAccess', token);
-                                    }
-                                    res.send({ userfound: true, match: true , redirect: '/home-page'})
+    //                     userDataModel.findOne( {username: req.body.username}, (err, data)=>{
+    //                         if(err){
+    //                             console.log("Error inside User Login: "+err)
+    //                         } else {
+    //                             if(data){
+    //                                 res.cookie('jwt', '', {maxAge:1});
+    //                                 if(req.body.rememberADay){
+    //                                     const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60 )//in mins
+    //                                     res.cookie('jwtLoginAccess', token,  { httpOnly: true, maxAge: 24*60*60*1000} ); 
 
-                                } else {
-                                    //work with registeration
-                                    const token = createtoken( req.body.username, 'ValidRegisteration', 60 )//in mins
-                                    res.cookie('jwtRegister', token,  { httpOnly: true, maxAge: 60*60*1000} );
-                                    res.send({ userfound: true, match: true ,redirect: '/register'})
-                                }
-                            }
-                        })
+    //                                 }else {
+    //                                     const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60)//in mins
+    //                                     res.cookie('jwtLoginAccess', token);
+    //                                 }
+    //                                 res.send({ userfound: true, match: true , redirect: '/home-page'})
+
+    //                             } else {
+    //                                 //work with registeration
+    //                                 const token = createtoken( req.body.username, 'ValidRegisteration', 60 )//in mins
+    //                                 res.cookie('jwtRegister', token,  { httpOnly: true, maxAge: 60*60*1000} );
+    //                                 res.send({ userfound: true, match: true ,redirect: '/register'})
+    //                             }
+    //                         }
+    //                     })
                         
-                    }
-                })
-            }
-        }
-    })
+    //                 }
+    //             })
+    //         }
+    //     }
+    // })
 
 }
 
