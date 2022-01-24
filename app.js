@@ -11,7 +11,7 @@ const registerRoutes = require('./routes/registerRoutes');
 const forgetpasswordRoutes = require('./routes/forgetpasswordRoutes');
 const cookieParser = require('cookie-parser');
 const Auth = require('./middleware/authMiddleware');
-
+const consoleFuntions = require("./middleware/consoleFunctions");
 
 
 
@@ -53,23 +53,23 @@ app.use(cookieParser());
 
 // basic routes
 // app.use('/', auth.checkLoginAccess, basicRoutes);
-app.use('/', basicRoutes);
+app.use('/', consoleFuntions.Basic, basicRoutes);
 
 
 // sign in and up routes
-app.use('/', signRoutes);
+app.use('/sign', consoleFuntions.Sign, signRoutes);
 
 // forget password routes
-app.use('/forget-password', forgetpasswordRoutes);
+app.use('/forget-password', consoleFuntions.ForgetPassword, forgetpasswordRoutes);
 
 // register routes
-app.use('/register', registerRoutes)
+app.use('/register', consoleFuntions.Register, registerRoutes)
 
 // home page routes
-app.use('/home-page', Auth.checkLoginAccess, hompageRoutes);
+app.use('/home-page', consoleFuntions.HomePage, Auth.checkLoginAccess, hompageRoutes);
 
 // blog routes
-app.use('/blog', blogRoutes);
+app.use('/blog', consoleFuntions.Blog, blogRoutes);
 
 // default route
 app.use((req, res)=>{

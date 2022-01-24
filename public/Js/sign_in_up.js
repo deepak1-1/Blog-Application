@@ -63,6 +63,7 @@ signInBtn.addEventListener('click', (e)=>{
 
     if(userPass === 1 && passwordPass === 1){
 
+
         let postOptions = {
             method: 'POST',
             headers: {
@@ -71,8 +72,8 @@ signInBtn.addEventListener('click', (e)=>{
             body: JSON.stringify( { username, password, rememberADay} )
         }
 
-        fetch('/login', postOptions)
-            .then(res => {console.log(res);})
+        fetch('/sign/login', postOptions)
+            .then(res => res.json())
                 .then( data => {
                     if ( !data.userfound){
                         userNotify.innerText = 'Invalid username or user don\'t exist';
@@ -180,7 +181,7 @@ verificationBtn.addEventListener('click',async (e)=> {
             emailNotify.innerText = 'Sending Code...';
             emailNotify.style.color = 'white';
 
-            await fetch('/check-user', postOptionsUserCheck)
+            await fetch('/sign/check-user', postOptionsUserCheck)
                 .then(res => res.json())
                 .then(data => {
                     if(data.found){
@@ -223,7 +224,7 @@ verificationBtn.addEventListener('click',async (e)=> {
                                 }
 
                             }
-                            fetch( '/get-code', postOptionsVerification)
+                            fetch( '/sign/get-code', postOptionsVerification)
                                 .then( res => res.json())
                                 .then( data => {
                                     // console.log(data);

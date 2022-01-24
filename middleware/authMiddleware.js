@@ -129,15 +129,21 @@ const checkLoginAccess = (req, res, next) =>{
 
 const checkRegisterAccess = (req, res, next) =>{
 
+	
 	const token = req.cookies.jwtRegister;
 	if(token){
-
+		
 		jwt.verify(token, 'ValidRegisteration', (err, decodedToken)=>{
 			if(err){
+				console.log(err);
 				res.redirect('/');
-			} else {
+			}
+			
+			if(decodedToken){
 				req.data = decodedToken.username ;
 				next();
+			} else {
+				res.redirect('/');
 			}
 		})
 	} else {

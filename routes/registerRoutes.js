@@ -41,12 +41,12 @@ const upload = multer({
 
 // main routes
 
-// router.get( '/', auth.checkRegisterAccess, registerController.userForm );
-router.get( '/', registerController.userForm );
+router.get( '/', auth.checkRegisterAccess, registerController.userForm );
+// router.get( '/', registerController.userForm );
 
 
-// router.post('/', auth.checkRegisterAccess, registerController.InsertUser);
-router.post('/', registerController.InsertUser);
+router.post('/', auth.checkRegisterAccess, registerController.InsertUser);
+// router.post('/', registerController.InsertUser);
 
 
 // router.get('/profile-photo', auth.checkProfileUpload, registerController.userImageInput);

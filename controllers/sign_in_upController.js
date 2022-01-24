@@ -32,7 +32,7 @@ const transporter = mailer.createTransport({
     service: 'gmail',
     auth : {
         user: 'deepaktewatia049@gmail.com',
-        pass: 'deepak@121'
+        pass: 'Deepak@121'
     }
 });
 
@@ -71,6 +71,7 @@ const create_and_send_code  = (req, res) => {
 
     transporter.sendMail( mailOptions, (err, info)=> {
         if(err){
+            console.log(err);
             res.send( { error:err });
         } else {
             userData = {
@@ -81,7 +82,7 @@ const create_and_send_code  = (req, res) => {
             res.cookie('jwtAccessVerification', token,  { httpOnly: true, maxAge: 5*60*1000} ); 
             res.send({
                 error: false,
-                redirect: '/verification'
+                redirect: '/sign/verification'
             });
         }
     })
@@ -95,7 +96,7 @@ const verify_code = (req, res) => {
         if (verificationCode.length === 6){
 
             if(Number( verificationCode ) === userData.before_verificationCode){
-                res.send( {redirect: '/sign-Up', error: false} )
+                res.send( {redirect: '/sign/sign-Up', error: false} )
             } else {
                 res.send( {redirect: false, error: 'Code don\'t match'} )
             }
@@ -113,8 +114,6 @@ const verify_code = (req, res) => {
 
 
 const check_user = async (req, res) => {
-
-    console.log('Inside user');
 
     const resData = {'found': false, 'limitExceed': false}
 
@@ -174,54 +173,50 @@ const register_user = (req, res) => {
 
 const user_login = (req, res) => {
 
-    console.log('Inside login');
+    loginDataModel.findOne( { 'username': req.body.username }, (error, data)=>{
+        if( error){
+            console.log(error);
+        } else {
+            if (!data){
+                res.send({ userfound: false, match: false });
+            } else {
+                bcrypt.compare(req.body.password, data.password, (err, isMatch)=>{
+                    if (err){
+                        console.log(err);
+                    } else if (!isMatch) {
+                        res.send({ userfound: true, match: false });
+                    } else {
 
-    res.send("Hello");
+                        userDataModel.findOne( {username: req.body.username}, (err, data)=>{
+                            if(err){
+                                console.log("Error inside User Login: "+err)
+                            } else {
+                                if(data){
+                                    res.cookie('jwt', '', {maxAge:1});
+                                    if(req.body.rememberADay){
+                                        const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60 )//in mins
+                                        res.cookie('jwtLoginAccess', token,  { httpOnly: true, maxAge: 24*60*60*1000} ); 
 
-    // loginDataModel.findOne( { 'username': req.body.username }, (error, data)=>{
-    //     if( error){
-    //         console.log(error);
-    //     } else {
-    //         if (!data){
-    //             res.send({ userfound: false, match: false });
-    //         } else {
-    //             bcrypt.compare(req.body.password, data.password, (err, isMatch)=>{
-    //                 if (err){
-    //                     console.log(err);
-    //                 } else if (!isMatch) {
-    //                     res.send({ userfound: true, match: false });
-    //                 } else {
+                                    }else {
+                                        const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60)//in mins
+                                        res.cookie('jwtLoginAccess', token);
+                                    }
+                                    res.send({ userfound: true, match: true , redirect: '/home-page'})
 
-    //                     userDataModel.findOne( {username: req.body.username}, (err, data)=>{
-    //                         if(err){
-    //                             console.log("Error inside User Login: "+err)
-    //                         } else {
-    //                             if(data){
-    //                                 res.cookie('jwt', '', {maxAge:1});
-    //                                 if(req.body.rememberADay){
-    //                                     const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60 )//in mins
-    //                                     res.cookie('jwtLoginAccess', token,  { httpOnly: true, maxAge: 24*60*60*1000} ); 
-
-    //                                 }else {
-    //                                     const token = createLoginToken( {username:req.body.username, name:data.name, profilePath: returnProfilePath(data)}, 'LoginAcess', 24*60)//in mins
-    //                                     res.cookie('jwtLoginAccess', token);
-    //                                 }
-    //                                 res.send({ userfound: true, match: true , redirect: '/home-page'})
-
-    //                             } else {
-    //                                 //work with registeration
-    //                                 const token = createtoken( req.body.username, 'ValidRegisteration', 60 )//in mins
-    //                                 res.cookie('jwtRegister', token,  { httpOnly: true, maxAge: 60*60*1000} );
-    //                                 res.send({ userfound: true, match: true ,redirect: '/register'})
-    //                             }
-    //                         }
-    //                     })
+                                } else {
+                                    //work with registeration
+                                    const token = createtoken( req.body.username, 'ValidRegisteration', 60 )//in mins
+                                    res.cookie('jwtRegister', token,  { httpOnly: true, maxAge: 60*60*1000} );
+                                    res.send({ userfound: true, match: true ,redirect: '/register'})
+                                }
+                            }
+                        })
                         
-    //                 }
-    //             })
-    //         }
-    //     }
-    // })
+                    }
+                })
+            }
+        }
+    })
 
 }
 

@@ -16,7 +16,7 @@ router.get('/sign-Up', sign_in_upController.register_user);
 //     res.render('login/verificationCode', {title: 'Verification', stylesheet: 'css/verification.css'});
 // })
 router.get('/verification', (req, res)=> {
-    res.render('login/verificationCode', {title: 'Verification', stylesheet: 'css/verification.css'});
+    res.render('login/verificationCode', {title: 'Verification', stylesheet: '/css/verification.css'});
 })
 
 

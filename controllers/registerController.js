@@ -43,6 +43,7 @@ const userForm = async (req, res)=>{
 
 const InsertUser = async (req, res)=>{
 
+	console.log("Inside Insert User");
 	const dataInsert = InsertUserDataModel({
 		username: req.body.username,
 		profilePicName: "",

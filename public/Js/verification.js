@@ -9,14 +9,14 @@ let getCodeBtnShown = 0;
 
 getCodeBtn.addEventListener(
     'click',async (e) => {
-        console.log('inside get code')
+        
         getOptions = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         }
-        await fetch('/get-code-again', getOptions)
+        await fetch('/sign/get-code-again', getOptions)
                 .then(res => res.json())
                 .then(data => {
                     if(data.send){
@@ -57,7 +57,7 @@ document.getElementById('submitBtn').addEventListener(
         };
 
         mainNotification.innerHTML = `<div class="alert alert-info">Registering...</div>`;
-        await fetch( '/verification', postOptions)
+        await fetch( '/sign/verification', postOptions)
             .then(res => res.json())
             .then(data => {
                 if(data.error){
