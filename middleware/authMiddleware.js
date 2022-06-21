@@ -101,12 +101,14 @@ const checkLoginAccess = (req, res, next) =>{
 
 		jwt.verify(token, 'LoginAcess', (err, decodedToken)=>{
 			if(err){
+				console.log(err);
 				if(req.url !== '/'){
 					res.redirect('/');
 				} else {
 					next()
 				}
-			} else {
+			} 
+			if(decodedToken){
 				if(req.url === '/'){
 					req.data = {username: decodedToken.data.username, name: decodedToken.data.name, profilePath: decodedToken.data.profilePath, login: true}
 					res.redirect('/home-page')
@@ -117,6 +119,7 @@ const checkLoginAccess = (req, res, next) =>{
 			}
 		})
 	} else {
+		console.log("Inside Else");
 		if(req.url !== '/'){
 			res.redirect('/');
 		} else {

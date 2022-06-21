@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const homepageController = require('../controllers/homepageController');
 
+router.get('/',  homepageController.get_home_page);
+
 router.get('/profile', homepageController.get_profile); 
 
 router.get('/followers', homepageController.get_followers);

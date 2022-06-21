@@ -7,7 +7,7 @@ router.get('/',  basicController.get_login_page); // login singup page (req, res
 
 router.get('/about',  basicController.get_about); // about
 
-router.get('/home-page',  basicController.get_home_page)
+// router.get('/home-page',  basicController.get_home_page)
 
 router.post('/log-out',  basicController.log_out);
 
@@ -27,6 +27,6 @@ router.post('/like',  basicController.like)
 
 router.post('/dislike',  basicController.dislike)
 
-router.post('/:username',  basicController.show_user)
+// router.post('/:username',  basicController.show_user)
 
 module.exports = router;

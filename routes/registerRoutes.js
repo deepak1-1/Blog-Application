@@ -49,13 +49,13 @@ router.post('/', auth.checkRegisterAccess, registerController.InsertUser);
 // router.post('/', registerController.InsertUser);
 
 
-// router.get('/profile-photo', auth.checkProfileUpload, registerController.userImageInput);
-router.get('/profile-photo', registerController.userImageInput);
+router.get('/profile-photo', auth.checkProfileUpload, registerController.userImageInput);
+// router.get('/profile-photo', registerController.userImageInput);
 
-// router.post('/profile-photo', auth.checkProfileUpload, upload.single('profile'), registerController.saveUserImage);
-router.post('/profile-photo', upload.single('profile'), registerController.saveUserImage);
+router.post('/profile-photo', auth.checkProfileUpload, upload.single('profile'), registerController.saveUserImage);
+// router.post('/profile-photo', upload.single('profile'), registerController.saveUserImage);
 
-// router.post('/profile-photo/skip', auth.checkProfileUpload, registerController.skipUserImage);
-router.post('/profile-photo/skip', registerController.skipUserImage);
+router.post('/profile-photo/skip', auth.checkProfileUpload, registerController.skipUserImage);
+// router.post('/profile-photo/skip', registerController.skipUserImage);
 
 module.exports = router;

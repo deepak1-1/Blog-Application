@@ -120,7 +120,7 @@ nextBtn.addEventListener('click', async (e)=>{
             body : JSON.stringify( postData )
 		}
 
-		fetch( '/register/', postOptions)
+		fetch( '/register', postOptions)
 			 .then(res => res.json())
 			 .then(data =>{
 			 	if(data.successfull){
